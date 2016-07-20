@@ -28,7 +28,7 @@ void makeTurnons()
     std::string outDirBase = "/users/jt15104/l1t-macros/l1t-macros-Output/";
     bool doFit = false;
     std::vector<std::string> puType = {"0PU12","13PU19","20PU"}; // Check the pu distribution to decide the relevant binning (for 2016 data these should be good)
-    std::vector<int> puBins = {0,13,20,999};
+    std::vector<int> puBins = {0,14,22,999};
 
     std::vector<std::string> inDir;
     // inDir.push_back("/hdfs/user/jt15104/copiesFromEOS/singleMuon2016_v70p1/run276242/");

@@ -7,6 +7,12 @@
 #include "Utilities/TL1DateTime.C"
 #include "Plotting/TL1Resolution.h"
 
+// note that this can be run on 'resolution' or 'energy' mode
+
+// resolution[0]->SetPlotType("Energy");
+// resolution[0]->SetBins(bins("Energy"));
+
+
 std::vector<double> bins(std::string plotType);
 void SetMyStyle(int palette, double rmarg, TStyle * myStyle);
 double FoldPhi(double phi);
@@ -24,7 +30,7 @@ void makeJetResolutions()
     std::string run = "6.3fb^{-1}"; // an additional label for the plots 
     std::string outDirBase = "/users/jt15104/l1t-macros/l1t-macros-Output/";
     std::vector<std::string> puType = {"0PU12","13PU19","20PU"};
-    std::vector<int> puBins = {0,13,20,999};
+    std::vector<int> puBins = {0,14,22,999};
 
     std::vector<std::string> inDir;
     // inDir.push_back("/hdfs/user/jt15104/copiesFromEOS/singleMuon2016_v70p1/run276242/");
@@ -32,7 +38,7 @@ void makeJetResolutions()
     inDir.push_back("/hdfs/user/jt15104/copiesFromEOS/singleMuon2016_v70p1/run276315/");
     // inDir.push_back("");        
     
-    std::string outDir = outDirBase+"/"+TL1DateTime::GetDate()+"_"+sample+"_"+"run-"+run+"_"+triggerName+"/resJets/";
+    std::string outDir = outDirBase+"/"+TL1DateTime::GetDate()+"_"+sample+"_"+"run-"+run+"_"+triggerName+"_v2/resJets/";
 
     TL1EventClass * event(new TL1EventClass(inDir));
     std::vector<TL1Resolution*> resolution;
@@ -63,13 +69,13 @@ void makeJetResolutions()
     resolution[0]->SetAddMark("#splitline{E_{T}^{offline} > 30 GeV}{|#eta_{jet}^{offline}| < 3.0}");
 
     // Jet Et - HF
-    resolution.emplace_back(new TL1Resolution());
-    resolution[1]->SetPlotType("Energy");
-    resolution[1]->SetBins(bins("Energy"));
-    resolution[1]->SetX("jetEt","Offline Jet E_{T}");
-    resolution[1]->SetY("l1JetEt","L1 Jet E_{T}");
-    resolution[1]->SetOutName(triggerName+"_jetEt_over_l1JetEt_hf");
-    resolution[1]->SetAddMark("#splitline{E_{T}^{offline} > 30 GeV}{|#eta_{jet}^{offline}| > 3.0}");
+    // resolution.emplace_back(new TL1Resolution());
+    // resolution[1]->SetPlotType("Energy");
+    // resolution[1]->SetBins(bins("Energy"));
+    // resolution[1]->SetX("jetEt","Offline Jet E_{T}");
+    // resolution[1]->SetY("l1JetEt","L1 Jet E_{T}");
+    // resolution[1]->SetOutName(triggerName+"_jetEt_over_l1JetEt_hf");
+    // resolution[1]->SetAddMark("#splitline{E_{T}^{offline} > 30 GeV}{|#eta_{jet}^{offline}| > 3.0}");
 
     // Jet phi - barrel
     // resolution.emplace_back(new TL1Resolution());
@@ -89,30 +95,30 @@ void makeJetResolutions()
 
     // Jet Phi - barrel + endcap
     resolution.emplace_back(new TL1Resolution());
-    resolution[2]->SetPlotType("Position");
-    resolution[2]->SetBins(bins("Position"));
-    resolution[2]->SetX("jetPhi","#phi_{jet}^{offline}");
-    resolution[2]->SetY("l1JetPhi","#phi_{jet}^{L1}");
-    resolution[2]->SetOutName(triggerName+"_jetPhi_over_l1JetPhi_barrel-endcap");
-    resolution[2]->SetAddMark("#splitline{E_{T}^{offline} > 30 GeV}{|#eta_{jet}^{offline}| < 3.0}");
+    resolution[1]->SetPlotType("Position");
+    resolution[1]->SetBins(bins("Position"));
+    resolution[1]->SetX("jetPhi","#phi_{jet}^{offline}");
+    resolution[1]->SetY("l1JetPhi","#phi_{jet}^{L1}");
+    resolution[1]->SetOutName(triggerName+"_jetPhi_over_l1JetPhi_barrel-endcap");
+    resolution[1]->SetAddMark("#splitline{E_{T}^{offline} > 30 GeV}{|#eta_{jet}^{offline}| < 3.0}");
 
     // Jet Phi - HF
-    resolution.emplace_back(new TL1Resolution());
-    resolution[3]->SetPlotType("Position");
-    resolution[3]->SetBins(bins("Position"));
-    resolution[3]->SetX("jetPhi","#phi_{jet}^{offline}");
-    resolution[3]->SetY("l1JetPhi","#phi_{jet}^{L1}");
-    resolution[3]->SetOutName(triggerName+"_jetPhi_over_l1JetPhi_hf");
-    resolution[3]->SetAddMark("#splitline{E_{T}^{offline} > 30 GeV}{|#eta_{jet}^{offline}| > 3.0}");
+    // resolution.emplace_back(new TL1Resolution());
+    // resolution[3]->SetPlotType("Position");
+    // resolution[3]->SetBins(bins("Position"));
+    // resolution[3]->SetX("jetPhi","#phi_{jet}^{offline}");
+    // resolution[3]->SetY("l1JetPhi","#phi_{jet}^{L1}");
+    // resolution[3]->SetOutName(triggerName+"_jetPhi_over_l1JetPhi_hf");
+    // resolution[3]->SetAddMark("#splitline{E_{T}^{offline} > 30 GeV}{|#eta_{jet}^{offline}| > 3.0}");
 
     // Jet Eta
     resolution.emplace_back(new TL1Resolution());
-    resolution[4]->SetPlotType("Position");
-    resolution[4]->SetBins(bins("Position"));
-    resolution[4]->SetX("jetEta","|#eta_{jet}^{offline}|");
-    resolution[4]->SetY("l1JetEta","|#eta_{jet}^{L1}|");
-    resolution[4]->SetOutName(triggerName+"_jetEta_over_l1JetEta");
-    resolution[4]->SetAddMark("E_{T}^{offline} > 30 GeV");
+    resolution[2]->SetPlotType("Position");
+    resolution[2]->SetBins(bins("Position"));
+    resolution[2]->SetX("jetEta","|#eta_{jet}^{offline}|");
+    resolution[2]->SetY("l1JetEta","|#eta_{jet}^{L1}|");
+    resolution[2]->SetOutName(triggerName+"_jetEta_over_l1JetEta");
+    resolution[2]->SetAddMark("E_{T}^{offline} > 30 GeV");
 
     for(auto it=resolution.begin(); it!=resolution.end(); ++it)
     {

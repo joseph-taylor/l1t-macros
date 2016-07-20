@@ -26,7 +26,7 @@ void makeXvsY()
     std::string run = "6.3fb^{-1}"; // an additional label for the plots
     std::string outDirBase = "/users/jt15104/l1t-macros/l1t-macros-Output/";
     std::vector<std::string> puType = {"0PU12","13PU19","20PU"};
-    std::vector<int> puBins = {0,13,20,999};
+    std::vector<int> puBins = {0,14,22,999};
 
     std::vector<std::string> inDir;
     // inDir.push_back("/hdfs/user/jt15104/copiesFromEOS/singleMuon2016_v70p1/run276242/");
@@ -48,12 +48,12 @@ void makeXvsY()
     xvsy[0]->SetOutName(triggerName+"_caloMetBE_vs_l1Met");
 
     // mht
-    xvsy.emplace_back(new TL1XvsY());
-    xvsy[1]->SetXBins(bins(200.0,1.0,0.0));
-    xvsy[1]->SetX("recoMht","Offline H_{T}^{miss} (GeV)");
-    xvsy[1]->SetYBins(bins(200.0,1.0,0.0));
-    xvsy[1]->SetY("l1Mht","L1 H_{T}^{miss} (GeV)");
-    xvsy[1]->SetOutName(triggerName+"_recoMht_vs_l1Mht");
+    // xvsy.emplace_back(new TL1XvsY());
+    // xvsy[1]->SetXBins(bins(200.0,1.0,0.0));
+    // xvsy[1]->SetX("recoMht","Offline H_{T}^{miss} (GeV)");
+    // xvsy[1]->SetYBins(bins(200.0,1.0,0.0));
+    // xvsy[1]->SetY("l1Mht","L1 H_{T}^{miss} (GeV)");
+    // xvsy[1]->SetOutName(triggerName+"_recoMht_vs_l1Mht");
 
     // caloEttBE
     // xvsy.emplace_back(new TL1XvsY());
@@ -73,19 +73,19 @@ void makeXvsY()
     
     // caloMetBE Phi
     xvsy.emplace_back(new TL1XvsY());
-    xvsy[2]->SetXBins(phiBins());
-    xvsy[2]->SetX("caloMetBEPhi","Offline E_{T}^{miss} Phi");
-    xvsy[2]->SetYBins(phiBins());
-    xvsy[2]->SetY("l1MetPhi","L1 E_{T}^{miss} Phi");
-    xvsy[2]->SetOutName(triggerName+"_caloMetBEPhi_vs_l1MetPhi");
+    xvsy[1]->SetXBins(phiBins());
+    xvsy[1]->SetX("caloMetBEPhi","Offline E_{T}^{miss} Phi");
+    xvsy[1]->SetYBins(phiBins());
+    xvsy[1]->SetY("l1MetPhi","L1 E_{T}^{miss} Phi");
+    xvsy[1]->SetOutName(triggerName+"_caloMetBEPhi_vs_l1MetPhi");
 
     // mht Phi
-    xvsy.emplace_back(new TL1XvsY());
-    xvsy[3]->SetXBins(phiBins());
-    xvsy[3]->SetX("recoMhtPhi","Offline H_{T}^{miss} Phi");
-    xvsy[3]->SetYBins(phiBins());
-    xvsy[3]->SetY("l1MhtPhi","L1 H_{T}^{miss} Phi");
-    xvsy[3]->SetOutName(triggerName+"_recoMhtPhi_vs_l1MhtPhi");
+    // xvsy.emplace_back(new TL1XvsY());
+    // xvsy[3]->SetXBins(phiBins());
+    // xvsy[3]->SetX("recoMhtPhi","Offline H_{T}^{miss} Phi");
+    // xvsy[3]->SetYBins(phiBins());
+    // xvsy[3]->SetY("l1MhtPhi","L1 H_{T}^{miss} Phi");
+    // xvsy[3]->SetOutName(triggerName+"_recoMhtPhi_vs_l1MhtPhi");
 
     for(auto it=xvsy.begin(); it!=xvsy.end(); ++it)
     {

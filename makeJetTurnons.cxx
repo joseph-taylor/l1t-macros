@@ -24,14 +24,14 @@ void makeJetTurnons()
     std::string outDirBase = "/users/jt15104/l1t-macros/l1t-macros-Output/";
     bool doFit = false;
     std::vector<std::string> puType = {"0PU12","13PU19","20PU"};
-    std::vector<int> puBins = {0,13,20,999};
+    std::vector<int> puBins = {0,14,22,999};
 
     std::vector<std::string> inDir;
     // inDir.push_back("/hdfs/user/jt15104/copiesFromEOS/singleMuon2016_v70p1/run276242/");
     // inDir.push_back("/hdfs/user/jt15104/copiesFromEOS/singleMuon2016_v70p1/run276243/");
-    inDir.push_back("/hdfs/user/jt15104/copiesFromEOS/singleMuon2016_v70p1/run276315/");    
+    inDir.push_back("/hdfs/user/jt15104/copiesFromEOS/singleMuon2016_v70p1/run276458/");    
 
-    std::string outDir = outDirBase+"/"+TL1DateTime::GetDate()+"_"+sample+"_"+"run-"+run+"_"+triggerName+"/TurnonsJets/";
+    std::string outDir = outDirBase+"/"+TL1DateTime::GetDate()+"_"+sample+"_"+"run-"+run+"_"+triggerName+"_v3/TurnonsJets/";
     TL1EventClass * event(new TL1EventClass(inDir));
 
     std::vector<TL1Turnon*> turnons;
@@ -46,7 +46,7 @@ void makeJetTurnons()
     // turnons[0]->SetFit(doFit);
     // turnons[0]->SetAddMark("|#eta| < 1.479");
 
-    // Jet Et - end cap
+    // // Jet Et - end cap
     // turnons.emplace_back(new TL1Turnon());
     // turnons[1]->SetSeeds({0., 36., 68., 128., 200.});
     // turnons[1]->SetXBins(bins());

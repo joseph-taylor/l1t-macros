@@ -24,7 +24,7 @@ void makeResolutions()
     std::string run = "6.3fb^{-1}"; // an additional label for the plots
     std::string outDirBase = "/users/jt15104/l1t-macros/l1t-macros-Output/";
     std::vector<std::string> puType = {"0PU12","13PU19","20PU"};
-    std::vector<int> puBins = {0,13,20,999};
+    std::vector<int> puBins = {0,14,22,999};
 
     std::vector<std::string> inDir;
     // inDir.push_back("/hdfs/user/jt15104/copiesFromEOS/singleMuon2016_v70p1/run276242/");
@@ -32,7 +32,7 @@ void makeResolutions()
     inDir.push_back("/hdfs/user/jt15104/copiesFromEOS/singleMuon2016_v70p1/run276315/");
     // inDir.push_back("");            
    
-    std::string outDir = outDirBase+"/"+TL1DateTime::GetDate()+"_"+sample+"_"+"run-"+run+"_"+triggerName+"/Resolutions/";
+    std::string outDir = outDirBase+"/"+TL1DateTime::GetDate()+"_"+sample+"_"+"run-"+run+"_"+triggerName+"_v2/Resolutions/";
     TL1EventClass * event(new TL1EventClass(inDir));
 
     std::vector<TL1Resolution*> resolution;
@@ -52,7 +52,7 @@ void makeResolutions()
     // resolution[1]->SetX("mht","Offline H_{T}^{miss}");
     // resolution[1]->SetY("l1mht","L1 H_{T}^{miss}");
     // resolution[1]->SetOutName(triggerName+"_recalcMht_over_l1Mht");
-    //resolution[1]->SetAddMark("L1 ETM > 40 GeV");
+    // resolution[1]->SetAddMark("L1 ETM > 40 GeV");
 
     // caloEttBE
     // resolution.emplace_back(new TL1Resolution());
@@ -60,33 +60,33 @@ void makeResolutions()
     // resolution[2]->SetX("caloEttBE","Offline Total E_{T}");
     // resolution[2]->SetY("l1ett","L1 Total E_{T}");
     // resolution[2]->SetOutName(triggerName+"_caloEttBE_over_l1Ett");
-    //resolution[2]->SetAddMark("L1 ETM > 40 GeV");
+    // resolution[2]->SetAddMark("L1 ETM > 40 GeV");
 
     // htt
-    resolution.emplace_back(new TL1Resolution());
-    resolution[1]->SetPlotType("Energy");
-    resolution[1]->SetBins(bins("Energy"));
-    resolution[1]->SetX("htt","Offline Total H_{T}");
-    resolution[1]->SetY("l1htt","L1 Total H_{T}");
-    resolution[1]->SetOutName(triggerName+"_htt_over_l1Htt");
-    resolution[1]->SetAddMark("Offline HTT > 100 GeV");
+    // resolution.emplace_back(new TL1Resolution());
+    // resolution[1]->SetPlotType("Energy");
+    // resolution[1]->SetBins(bins("Energy"));
+    // resolution[1]->SetX("htt","Offline Total H_{T}");
+    // resolution[1]->SetY("l1htt","L1 Total H_{T}");
+    // resolution[1]->SetOutName(triggerName+"_htt_over_l1Htt");
+    // resolution[1]->SetAddMark("Offline HTT > 100 GeV");
 
     // caloMetBE Phi
-    resolution.emplace_back(new TL1Resolution());
-    resolution[2]->SetPlotType("Position");
-    resolution[2]->SetBins(bins("Position"));
-    resolution[2]->SetX("caloMetBEPhi","Offline E_{T}^{miss} Phi");
-    resolution[2]->SetY("l1metphi","L1 E_{T}^{miss} Phi");
-    resolution[2]->SetOutName(triggerName+"_caloMetBEPhi_over_l1MetPhi");
+    // resolution.emplace_back(new TL1Resolution());
+    // resolution[2]->SetPlotType("Position");
+    // resolution[2]->SetBins(bins("Position"));
+    // resolution[2]->SetX("caloMetBEPhi","Offline E_{T}^{miss} Phi");
+    // resolution[2]->SetY("l1metphi","L1 E_{T}^{miss} Phi");
+    // resolution[2]->SetOutName(triggerName+"_caloMetBEPhi_over_l1MetPhi");
     //resolution[0]->SetAddMark("L1 ETM > 40 GeV");
 
     // mht Phi
-    resolution.emplace_back(new TL1Resolution());
-    resolution[3]->SetPlotType("Position");
-    resolution[3]->SetBins(bins("Position"));
-    resolution[3]->SetX("mhtPhi","Offline H_{T}^{miss} Phi");
-    resolution[3]->SetY("l1httphi","L1 Total H_{T} Phi");
-    resolution[3]->SetOutName(triggerName+"_recalcMhtPhi_over_l1MhtPhi");
+    // resolution.emplace_back(new TL1Resolution());
+    // resolution[3]->SetPlotType("Position");
+    // resolution[3]->SetBins(bins("Position"));
+    // resolution[3]->SetX("mhtPhi","Offline H_{T}^{miss} Phi");
+    // resolution[3]->SetY("l1httphi","L1 Total H_{T} Phi");
+    // resolution[3]->SetOutName(triggerName+"_recalcMhtPhi_over_l1MhtPhi");
     //resolution[0]->SetAddMark("L1 ETM > 40 GeV");
 
     for(auto it=resolution.begin(); it!=resolution.end(); ++it)
