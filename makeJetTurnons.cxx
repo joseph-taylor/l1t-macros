@@ -31,7 +31,7 @@ void makeJetTurnons()
     // inDir.push_back("/hdfs/user/jt15104/copiesFromEOS/singleMuon2016_v70p1/run276243/");
     inDir.push_back("/hdfs/user/jt15104/copiesFromEOS/singleMuon2016_v70p1/run276458/");    
 
-    std::string outDir = outDirBase+"/"+TL1DateTime::GetDate()+"_"+sample+"_"+"run-"+run+"_"+triggerName+"_v3/TurnonsJets/";
+    std::string outDir = outDirBase+"/"+TL1DateTime::GetDate()+"_"+sample+"_"+"run-"+run+"_"+triggerName+"_v4/TurnonsJets/";
     TL1EventClass * event(new TL1EventClass(inDir));
 
     std::vector<TL1Turnon*> turnons;
