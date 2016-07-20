@@ -8,6 +8,7 @@
 #include "Plotting/TL1Turnon.h"
 
 vector<double> bins();
+vector<double> binsHF();
 void SetMyStyle(int palette, double rmarg, TStyle * myStyle);
 
 void makeJetTurnons()
@@ -23,7 +24,7 @@ void makeJetTurnons()
     std::string run = "6.3fb^{-1}"; // an additional label for the plots
     std::string outDirBase = "/afs/cern.ch/user/t/taylor/l1t-macros/output_plots/";
     bool doFit = false;
-    std::vector<std::string> puType = {"0PU12","13PU19","20PU"};
+    std::vector<std::string> puType = {"0PU13","14PU21","22PU"};
     std::vector<int> puBins = {0,14,22,999};
 
     std::vector<std::string> inDir;
@@ -72,7 +73,7 @@ void makeJetTurnons()
     inDir.push_back("root://eoscms.cern.ch//eos/cms/store/group/dpg_trigger/comm_trigger/L1Trigger/L1Menu2016/Stage2/Collision2016-wRECO-l1t-integration-v71p1/SingleMuon/crab_Collision2016-wRECO-l1t-integration-v71p1__276775_SingleMuon/160715_224730/0000/");
     inDir.push_back("root://eoscms.cern.ch//eos/cms/store/group/dpg_trigger/comm_trigger/L1Trigger/L1Menu2016/Stage2/Collision2016-wRECO-l1t-integration-v71p1/SingleMuon/crab_Collision2016-wRECO-l1t-integration-v71p1__276776_SingleMuon/160715_224856/0000/");       
 
-    std::string outDir = outDirBase+"/ICHEPv1_"+TL1DateTime::GetDate()+"_"+sample+"_"+"run-"+run+"_"+triggerName+"/resJets/";
+    std::string outDir = outDirBase+"/ICHEPv1_"+TL1DateTime::GetDate()+"_"+sample+"_"+"run-"+run+"_"+triggerName+"/TurnonsJets/";
     TL1EventClass * event(new TL1EventClass(inDir));
 
     std::vector<TL1Turnon*> turnons;
@@ -110,7 +111,7 @@ void makeJetTurnons()
     // Jet Et - HF
     turnons.emplace_back(new TL1Turnon());
     turnons[1]->SetSeeds({0., 36., 68., 128., 176.});
-    turnons[1]->SetXBins(bins());
+    turnons[1]->SetXBins(binsHF());
     turnons[1]->SetX("recoJetEt","Offline Jet E_{T} (GeV)");
     turnons[1]->SetSeed("l1JetEt","L1 Jet E_{T}");
     turnons[1]->SetOutName(triggerName+"_recoJetEt_l1JetEtSeeds_hf");
@@ -172,7 +173,21 @@ void makeJetTurnons()
 vector<double> bins()
 {
     vector<double> temp;
-    for(double binLowerEdge= 0.0; binLowerEdge< 120.0; binLowerEdge+=5.0) temp.push_back(binLowerEdge);
+    for(double binLowerEdge= 0.0; binLowerEdge< 120.0; binLowerEdge+=2.0) temp.push_back(binLowerEdge);
+    for(double binLowerEdge=120.0; binLowerEdge< 180.0; binLowerEdge+=2.0) temp.push_back(binLowerEdge);
+    for(double binLowerEdge=180.0; binLowerEdge< 300.0; binLowerEdge+=2.0) temp.push_back(binLowerEdge);
+    for(double binLowerEdge=300.0; binLowerEdge< 400.1; binLowerEdge+=5.0) temp.push_back(binLowerEdge);
+//    for(double binLowerEdge= 40.0; binLowerEdge< 70.0; binLowerEdge+= 2.5) temp.push_back(binLowerEdge);
+//    for(double binLowerEdge= 70.0; binLowerEdge<200.0; binLowerEdge+= 5.0) temp.push_back(binLowerEdge);
+//    for(double binLowerEdge=200.0; binLowerEdge<300.0; binLowerEdge+=10.0) temp.push_back(binLowerEdge);
+//    for(double binLowerEdge=300.0; binLowerEdge<400.1; binLowerEdge+=20.0) temp.push_back(binLowerEdge);
+    return temp;
+}
+
+vector<double> binsHF()
+{
+    vector<double> temp;
+    for(double binLowerEdge= 0.0; binLowerEdge< 120.0; binLowerEdge+=2.0) temp.push_back(binLowerEdge);
     for(double binLowerEdge=120.0; binLowerEdge< 180.0; binLowerEdge+=5.0) temp.push_back(binLowerEdge);
     for(double binLowerEdge=180.0; binLowerEdge< 300.0; binLowerEdge+=10.0) temp.push_back(binLowerEdge);
     for(double binLowerEdge=300.0; binLowerEdge< 400.1; binLowerEdge+=20.0) temp.push_back(binLowerEdge);

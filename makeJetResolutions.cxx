@@ -29,7 +29,7 @@ void makeJetResolutions()
 
     std::string run = "6.3fb^{-1}"; // an additional label for the plots 
     std::string outDirBase = "/afs/cern.ch/user/t/taylor/l1t-macros/output_plots/";
-    std::vector<std::string> puType = {"0PU12","13PU19","20PU"};
+    std::vector<std::string> puType = {"0PU13","14PU21","22PU"};
     std::vector<int> puBins = {0,14,22,999};
 
     std::vector<std::string> inDir;

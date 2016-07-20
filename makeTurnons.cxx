@@ -27,7 +27,7 @@ void makeTurnons()
     std::string run = "6.3fb^{-1}"; // an additional label for the plots
     std::string outDirBase = "/afs/cern.ch/user/t/taylor/l1t-macros/output_plots/";
     bool doFit = false;
-    std::vector<std::string> puType = {"0PU12","13PU19","20PU"}; // Check the pu distribution to decide the relevant binning (for 2016 data these should be good)
+    std::vector<std::string> puType = {"0PU13","14PU21","22PU"}; // Check the pu distribution to decide the relevant binning (for 2016 data these should be good)
     std::vector<int> puBins = {0,14,22,999};
 
     std::vector<std::string> inDir;
@@ -76,7 +76,7 @@ void makeTurnons()
     inDir.push_back("root://eoscms.cern.ch//eos/cms/store/group/dpg_trigger/comm_trigger/L1Trigger/L1Menu2016/Stage2/Collision2016-wRECO-l1t-integration-v71p1/SingleMuon/crab_Collision2016-wRECO-l1t-integration-v71p1__276775_SingleMuon/160715_224730/0000/");
     inDir.push_back("root://eoscms.cern.ch//eos/cms/store/group/dpg_trigger/comm_trigger/L1Trigger/L1Menu2016/Stage2/Collision2016-wRECO-l1t-integration-v71p1/SingleMuon/crab_Collision2016-wRECO-l1t-integration-v71p1__276776_SingleMuon/160715_224856/0000/");              
 
-    std::string outDir = outDirBase+"/ICHEPv1_"+TL1DateTime::GetDate()+"_"+sample+"_"+"run-"+run+"_"+triggerName+"/resJets/";
+    std::string outDir = outDirBase+"/ICHEPv1_"+TL1DateTime::GetDate()+"_"+sample+"_"+"run-"+run+"_"+triggerName+"/Turnons/";
     TL1EventClass * event(new TL1EventClass(inDir));
     std::vector<TL1Turnon*> turnons;
 
@@ -208,8 +208,8 @@ vector<double> httBins()
     for(double binLowerEdge=  0.0; binLowerEdge<100.0; binLowerEdge+= 5.0) temp.push_back(binLowerEdge);
     for(double binLowerEdge=100.0; binLowerEdge<200.0; binLowerEdge+= 5.0) temp.push_back(binLowerEdge);
     for(double binLowerEdge=200.0; binLowerEdge<400.0; binLowerEdge+= 5.0) temp.push_back(binLowerEdge);
-    for(double binLowerEdge=400.0; binLowerEdge<500.0; binLowerEdge+=10.0) temp.push_back(binLowerEdge);
-    for(double binLowerEdge=500.0; binLowerEdge<600.1; binLowerEdge+=20.0) temp.push_back(binLowerEdge);
+    for(double binLowerEdge=400.0; binLowerEdge<500.0; binLowerEdge+= 5.0) temp.push_back(binLowerEdge);
+    for(double binLowerEdge=500.0; binLowerEdge<600.1; binLowerEdge+= 5.0) temp.push_back(binLowerEdge);
 
     return temp;
 
