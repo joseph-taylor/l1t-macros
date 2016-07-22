@@ -94,7 +94,6 @@ void makeXvsY()
     xvsy[0]->SetYBins(bins(200.0,1.0,0.0));
     xvsy[0]->SetY("l1Met","L1 E_{T}^{miss} (GeV)");
     xvsy[0]->SetOutName(triggerName+"_caloMetBE_vs_l1Met");
-    xvsy[0]->SetAddMark("Offline E_{T}^{miss} > 40 GeV");
 
     // mht
     // xvsy.emplace_back(new TL1XvsY());
@@ -192,8 +191,11 @@ void makeXvsY()
         double l1MetPhi = event->fL1MetPhi;
         if( event->fMetFilterPassFlag && recoMet > 40.0 && l1Met != 0.0 )
         {
-            xvsy[0]->Fill(recoMet, l1Met, pu);
             xvsy[1]->Fill(FoldPhi(recoMetPhi), FoldPhi(l1MetPhi), pu);
+        }
+        if( event->fMetFilterPassFlag && recoMet != 0.0 && l1Met != 0.0 )
+        {
+            xvsy[0]->Fill(recoMet, l1Met, pu);
         }
     }
 
