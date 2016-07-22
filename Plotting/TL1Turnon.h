@@ -34,7 +34,7 @@ class TL1Turnon : public TL1Plots
         void SetSeed(const std::string & seedName, const std::string & seedTitle);
         void SetFit(const bool & doFit);
     private:
-        void SetColor(TH1F * hist, float fraction, int index);
+        // void SetColor(TH1F * hist, float fraction, int index);
 
         std::vector<std::vector<TH1F*>> fPlots;
         std::vector<std::vector<TGraphAsymmErrors*>> fTurnons;
@@ -66,7 +66,7 @@ void TL1Turnon::InitPlots()
         temp.back()->SetDirectory(0);
         temp.back()->GetXaxis()->SetTitle(fXTitle.c_str());
         temp.back()->GetYaxis()->SetTitle("Number of Entries");
-        SetColor(temp.back(), (double)(i-1)/(double)(fSeeds.size()-2), i);
+        this->SetColor(fPlot[ipu+1], ipu, this->GetPuType.size());
 
         for(int ipu=0; ipu<this->GetPuType().size(); ++ipu)
         {
@@ -74,7 +74,7 @@ void TL1Turnon::InitPlots()
             temp.back()->SetDirectory(0);
             temp.back()->GetXaxis()->SetTitle(fXTitle.c_str());
             temp.back()->GetYaxis()->SetTitle("Number of Entries");
-            SetColor(temp.back(), (double)(ipu)/(double)(this->GetPuType().size()-2), ipu);
+            this->SetColor(fPlot[ipu+1], ipu, this->GetPuType.size());
         }
         fPlots.push_back(temp);
     }
@@ -306,17 +306,17 @@ void TL1Turnon::SetFit(const bool & doFit)
     fDoFit = doFit;
 }
 
-void TL1Turnon::SetColor(TH1F * hist, float fraction, int index)
-{
-    double modifier(0.15), colorIndex;
-    int colour(1);
-    if( fraction >= 0.0 )
-    {
-        colorIndex = (fraction * (1.0-2.0*modifier) + modifier) * gStyle->GetNumberOfColors();
-        colour = gStyle->GetColorPalette(colorIndex);
-    }
-    hist->SetLineColor(colour);
-    hist->SetMarkerColor(colour);
-}
+// void TL1Turnon::SetColor(TH1F * hist, float fraction, int index)
+// {
+//     double modifier(0.15), colorIndex;
+//     int colour(1);
+//     if( fraction >= 0.0 )
+//     {
+//         colorIndex = (fraction * (1.0-2.0*modifier) + modifier) * gStyle->GetNumberOfColors();
+//         colour = gStyle->GetColorPalette(colorIndex);
+//     }
+//     hist->SetLineColor(colour);
+//     hist->SetMarkerColor(colour);
+// }
 
 #endif

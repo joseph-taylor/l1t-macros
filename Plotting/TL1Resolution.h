@@ -26,7 +26,7 @@ class TL1Resolution : public TL1Plots
         void SetX(const std::string & xName, const std::string & xTitle);
         void SetY(const std::string & yName, const std::string & yTitle);
         void SetPlotType(const std::string & plotType);
-        void SetColor(TH1F * plot, float fraction, int index);
+        // void SetColor(TH1F * plot, float fraction, int index);
         void DrawCmsStamp(std::string stampPos="Left");
 
         std::string GetXAxisTitle() const;
@@ -118,7 +118,7 @@ void TL1Resolution::DrawPlots()
     TLegend * leg(new TLegend(0.65,0.55,0.88,0.55+0.05*this->GetPuType().size()));
     for(int i=0; i<this->GetPuType().size(); ++i)
     {
-        this->SetColor(fPlot[i+1], (double)(this->GetPuType().size()-i-1)/(double)(this->GetPuType().size()-2),i+1);
+        this->SetColor(fPlot[ipu+1], ipu, this->GetPuType.size());
         fPlot[i+1]->Sumw2();
         fPlot[i+1]->Scale(1./fPlot[i+1]->Integral());
         fPlot[i+1]->SetMinimum(0.0);
@@ -173,18 +173,18 @@ void TL1Resolution::SetPlotType(const std::string & plotType)
     fPlotType = plotType;
 }
 
-void TL1Resolution::SetColor(TH1F * plot, float fraction, int index)
-{
-    double modifier(0.15), colorIndex;
-    int colour(1);
-    if( fraction >= 0.0 )
-    {
-        colorIndex = (fraction * (1.0-2.0*modifier) + modifier) * gStyle->GetNumberOfColors();
-        colour = gStyle->GetColorPalette(colorIndex);
-    }
-    plot->SetLineColor(colour);
-    plot->SetMarkerColor(colour);
-}
+// void TL1Resolution::SetColor(TH1F * plot, float fraction, int index)
+// {
+//     double modifier(0.15), colorIndex;
+//     int colour(1);
+//     if( fraction >= 0.0 )
+//     {
+//         colorIndex = (fraction * (1.0-2.0*modifier) + modifier) * gStyle->GetNumberOfColors();
+//         colour = gStyle->GetColorPalette(colorIndex);
+//     }
+//     plot->SetLineColor(colour);
+//     plot->SetMarkerColor(colour);
+// }
 
 void TL1Resolution::DrawCmsStamp(std::string stampPos="Left")
 {
