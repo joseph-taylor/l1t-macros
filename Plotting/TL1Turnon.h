@@ -66,7 +66,7 @@ void TL1Turnon::InitPlots()
         temp.back()->SetDirectory(0);
         temp.back()->GetXaxis()->SetTitle(fXTitle.c_str());
         temp.back()->GetYaxis()->SetTitle("Number of Entries");
-        this->SetColor(fPlot[ipu+1], ipu, this->GetPuType.size());
+        this->SetColor(fPlots[i], ipu, this->GetPuType.size());
 
         for(int ipu=0; ipu<this->GetPuType().size(); ++ipu)
         {
@@ -74,7 +74,7 @@ void TL1Turnon::InitPlots()
             temp.back()->SetDirectory(0);
             temp.back()->GetXaxis()->SetTitle(fXTitle.c_str());
             temp.back()->GetYaxis()->SetTitle("Number of Entries");
-            this->SetColor(fPlot[ipu+1], ipu, this->GetPuType.size());
+            this->SetColor(fPlots[ipu+1], ipu, this->GetPuType.size());
         }
         fPlots.push_back(temp);
     }
