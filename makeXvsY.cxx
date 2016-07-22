@@ -126,7 +126,7 @@ void makeXvsY()
     xvsy[1]->SetYBins(phiBins());
     xvsy[1]->SetY("l1MetPhi","L1 E_{T}^{miss} Phi");
     xvsy[1]->SetOutName(triggerName+"_caloMetBEPhi_vs_l1MetPhi");
-    xvsy[1]->SetAddMark("Offline E_{T}^{miss} > 40 GeV");
+    // xvsy[1]->SetAddMark("Offline E_{T}^{miss} > 40 GeV");
 
     // mht Phi
     // xvsy.emplace_back(new TL1XvsY());
