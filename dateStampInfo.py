@@ -1,7 +1,7 @@
 import os
 
 # TO RUN (on lxplus)
-# $ python <pathToFile>/dateStampInfo.py
+# $ python <pathToThisFile>/dateStampInfo.py
 
 eosLocationBase = "/eos/cms/store/group/dpg_trigger/comm_trigger/L1Trigger/L1Menu2016/Stage2/Collision2016-wRECO-l1t-integration-v71p1/SingleMuon/"
 
@@ -53,7 +53,13 @@ directories = [
 "crab_Collision2016-wRECO-l1t-integration-v71p1__276659_SingleMuon/",
 "crab_Collision2016-wRECO-l1t-integration-v71p1__276775_SingleMuon/",
 "crab_Collision2016-wRECO-l1t-integration-v71p1__276776_SingleMuon/",
+"crab_Collision2016-wRECO-l1t-integration-v71p1__276794_SingleMuon/",
+"crab_Collision2016-wRECO-l1t-integration-v71p1__276807_SingleMuon/",
+"crab_Collision2016-wRECO-l1t-integration-v71p1__276808_SingleMuon/",
+"crab_Collision2016-wRECO-l1t-integration-v71p1__276810_SingleMuon/",
+"crab_Collision2016-wRECO-l1t-integration-v71p1__276811_SingleMuon/",
 ]
+
 
 # run w/o datestamps line to get the required
 # datestamps list...can then put in to check 0000's
@@ -110,6 +116,11 @@ dateStamps = [
 os.system("source /afs/cern.ch/project/eos/installation/cms/etc/setup.sh")
 i=0
 for directory in directories:
-    os.system("eos ls %s%s | tail -1" % (eosLocationBase,directory))  
-    #os.system("eos ls %s%s%s" % (eosLocationBase,directory,dateStamps[i]))
-    #i=i+1
+	print i
+	# to get date stamp
+	os.system("eos ls %s%s | tail -1" % (eosLocationBase,directory))
+
+    # to check date stamp
+    # os.system("eos ls %s%s%s" % (eosLocationBase,directory,dateStamps[i]))
+    
+	i=i+1

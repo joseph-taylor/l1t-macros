@@ -74,7 +74,7 @@ void makeXvsY()
     inDir.push_back("root://eoscms.cern.ch//eos/cms/store/group/dpg_trigger/comm_trigger/L1Trigger/L1Menu2016/Stage2/Collision2016-wRECO-l1t-integration-v71p1/SingleMuon/crab_Collision2016-wRECO-l1t-integration-v71p1__276775_SingleMuon/160715_224730/0000/");
     inDir.push_back("root://eoscms.cern.ch//eos/cms/store/group/dpg_trigger/comm_trigger/L1Trigger/L1Menu2016/Stage2/Collision2016-wRECO-l1t-integration-v71p1/SingleMuon/crab_Collision2016-wRECO-l1t-integration-v71p1__276776_SingleMuon/160715_224856/0000/");               
    
-    std::string outDir = outDirBase+"/ICHEPv1_"+TL1DateTime::GetDate()+"_"+sample+"_"+"run-"+run+"_"+triggerName+"/xy/";
+    std::string outDir = outDirBase+"/ICHEPvf9ce9_"+TL1DateTime::GetDate()+"_"+sample+"_"+"run-"+run+"_"+triggerName+"/xy/";
     TL1EventClass * event(new TL1EventClass(inDir));
 
     std::vector<TL1XvsY*> xvsy;
@@ -180,7 +180,7 @@ void makeXvsY()
         double l1Met = event->fL1Met;
         double recoMetPhi = sums->caloMetPhiBE;
         double l1MetPhi = event->fL1MetPhi;
-        if( event->fMetFilterPassFlag && recoMet > 0.0 && l1Met > 0.0 )
+        if( event->fMetFilterPassFlag && recoMet > 40.0 && l1Met != 0.0 )
         {
             xvsy[0]->Fill(recoMet, l1Met, pu);
             xvsy[2]->Fill(FoldPhi(recoMetPhi), FoldPhi(l1MetPhi), pu);
