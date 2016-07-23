@@ -55,3 +55,12 @@ Now repeat this for all plots desired. Further down in the code inside the event
 ### makeResolutions.cxx
 
 ### makeTurnons.cxx
+
+
+
+
+
+###BATCHMODE STUFF###
+Put eos paths in runDirectories.cxx
+all you need to do is change the python/submitParallelProcesses.py info's
+and then run that python script from jobLogs directory...
