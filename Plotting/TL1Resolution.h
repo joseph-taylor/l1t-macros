@@ -118,27 +118,27 @@ void TL1Resolution::DrawPlots()
     TLegend * leg(new TLegend(0.65,0.55,0.88,0.55+0.05*this->GetPuType().size()));
     for(int i=0; i<this->GetPuType().size(); ++i)
     {
-        this->SetColor(fPlot[i], i, this->GetPuType().size());
-        fPlot[i]->Sumw2();
-        fPlot[i]->Scale(1./fPlot[i]->Integral());
-        fPlot[i]->SetMinimum(0.0);
-        fPlot[i]->SetMaximum(1.1*fPlot[i]->GetMaximum());
-        if( i==0 ) fPlot[i]->Draw("pe");
-        else fPlot[i]->Draw("pesame");
-        fPlot[i]->Draw("histsame");
-        fRootFile->WriteTObject(fPlot[i]);
+        this->SetColor(fPlot[i+1], i, this->GetPuType().size());
+        fPlot[i+1]->Sumw2();
+        fPlot[i+1]->Scale(1./fPlot[i+1]->Integral());
+        fPlot[i+1]->SetMinimum(0.0);
+        fPlot[i+1]->SetMaximum(1.1*fPlot[i+1]->GetMaximum());
+        if( i==0 ) fPlot[i+1]->Draw("pe");
+        else fPlot[i+1]->Draw("pesame");
+        fPlot[i+1]->Draw("histsame");
+        fRootFile->WriteTObject(fPlot[i+1]);
 
-        TF1 * fitFcn2(new TF1(Form("fit_%s",fPlot[i]->GetName()),"gaus(0)",-1,3));
+        TF1 * fitFcn2(new TF1(Form("fit_%s",fPlot[i+1]->GetName()),"gaus(0)",-1,3));
         //fPlot[i+1]->Fit(fitFcn2,"E0");
         //for(int j=0; j<10; ++j) fPlot[i+1]->Fit(fitFcn2,"E0M");
-        fitFcn2->SetLineColor(fPlot[i]->GetLineColor());
+        fitFcn2->SetLineColor(fPlot[i+1]->GetLineColor());
         //fitFcn2->Draw("same");
         //fRootFile->WriteTObject(fitFcn2);
         
         std::stringstream entryName;
         if( i < this->GetPuType().size()-1 ) entryName << this->GetPuBins()[i] << " #leq PU < " << this->GetPuBins()[i+1];
         else entryName << this->GetPuBins()[i] << " #leq PU";
-        leg->AddEntry(fPlot[i],entryName.str().c_str());
+        leg->AddEntry(fPlot[i+1],entryName.str().c_str());
         entryName.str("");
     }
     DrawCmsStamp();
