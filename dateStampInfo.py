@@ -3,6 +3,8 @@ import os
 # TO RUN (on lxplus)
 # $ python <pathToThisFile>/dateStampInfo.py
 
+# annoyingly python and eos don't always talk...
+
 eosLocationBase = "/eos/cms/store/group/dpg_trigger/comm_trigger/L1Trigger/L1Menu2016/Stage2/Collision2016-wRECO-l1t-integration-v71p1/SingleMuon/"
 
 # $ eos ls eosLocationBase
@@ -59,7 +61,6 @@ directories = [
 "crab_Collision2016-wRECO-l1t-integration-v71p1__276810_SingleMuon/",
 "crab_Collision2016-wRECO-l1t-integration-v71p1__276811_SingleMuon/",
 ]
-
 
 # run w/o datestamps line to get the required
 # datestamps list...can then put in to check 0000's
