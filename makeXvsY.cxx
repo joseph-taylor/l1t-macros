@@ -23,7 +23,7 @@ void makeXvsY(unsigned runChoiceIndex, std::string batchJobSaveLabel)
     inDir.push_back(vecOfDirs[runChoiceIndex]);
     std::string run = "run" + vecOfRuns[runChoiceIndex];
     std::string outDirBase = "/afs/cern.ch/user/t/taylor/l1t-macros/output_plots/";
-    std::string outDir = outDirBase + batchJobSaveLabel + "/resJets/" + run;
+    std::string outDir = outDirBase + batchJobSaveLabel + "/xy/" + run;
     std::vector<std::string> puType = {"0PU13","14PU21","22PU"};
     std::vector<int> puBins = {0,14,22,999};
     std::string sample = "Data";
