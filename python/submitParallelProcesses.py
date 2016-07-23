@@ -6,7 +6,7 @@ import os
 # all outputs form these batch jobs will be beaneath this dir
 # require many many quotes...
 
-batchJobSaveLabel = '"parallelRunning_v2testing"'
+batchJobSaveLabel = '"parallelRunning_ICHEPv1"'
 numberOfFiles = 49
 
 # want to set this length as the actual length of the vector of run entries.
