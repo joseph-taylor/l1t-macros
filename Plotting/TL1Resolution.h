@@ -120,7 +120,7 @@ void TL1Resolution::DrawPlots()
     {
         this->SetColor(fPlot[i+1], i, this->GetPuType().size());
         fPlot[i+1]->Sumw2();
-        fPlot[i+1]->Scale(1./fPlot[i]->Integral());
+        fPlot[i+1]->Scale(1./fPlot[i+1]->Integral());
         fPlot[i+1]->SetMinimum(0.0);
         fPlot[i+1]->SetMaximum(1.1*fPlot[i+1]->GetMaximum());
         if( i==0 ) fPlot[i+1]->Draw("pe");
