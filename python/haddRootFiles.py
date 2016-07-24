@@ -1,9 +1,12 @@
 import os
 from runList import listOfRunsForPython
 
+# $ python /afs/cern.ch/user/t/taylor/l1t-macros/python/haddRootFiles.py
+
+# what about .root files which are ~null???
 ######################################################################
 ######################################################################
-motherDirectory = "parallelRunning_ICHEPv2/"
+motherDirectory = "parallelRunning_TESTINGv3/"
 
 resJets = ["res_SingleMu_jetEt_over_l1JetEt_barrel-endcap.root",
            "res_SingleMu_jetEta_over_l1JetEta.root",
@@ -12,14 +15,10 @@ resJets = ["res_SingleMu_jetEt_over_l1JetEt_barrel-endcap.root",
 Resolutions = ["res_SingleMu_caloMetBE_over_l1Met.root"]
 
 Turnons = ["dists_SingleMu_caloMetBE_l1MetSeeds.root",
-           "dists_SingleMu_recoHtt_l1HttSeeds.root",
-           "effs_SingleMu_caloMetBE_l1MetSeeds.root",
-           "effs_SingleMu_recoHtt_l1HttSeeds.root"]
+           "dists_SingleMu_recoHtt_l1HttSeeds.root"]
 
 TurnonsJets = ["dists_SingleMu_recoJetEt_l1JetEtSeeds_barrel-endcap.root",
-               "dists_SingleMu_recoJetEt_l1JetEtSeeds_hf.root",
-               "effs_SingleMu_recoJetEt_l1JetEtSeeds_barrel-endcap.root",
-               "effs_SingleMu_recoJetEt_l1JetEtSeeds_hf.root"]
+               "dists_SingleMu_recoJetEt_l1JetEtSeeds_hf.root"]
 
 xy = ["xy_SingleMu_caloMetBE_vs_l1Met.root",
       "xy_SingleMu_caloMetBEPhi_vs_l1MetPhi.root"]
@@ -37,7 +36,7 @@ os.system("mkdir combinedRuns/")
 os.system("mkdir combinedRuns/resJets/")
 os.system("mkdir combinedRuns/Resolutions/")
 os.system("mkdir combinedRuns/Turnons/")
-os.system("mkdir combinedRuns/TurnonJets/")
+os.system("mkdir combinedRuns/TurnonsJets/")
 os.system("mkdir combinedRuns/xy/")
 os.system("mkdir combinedRuns/xyJets/")
 
@@ -51,8 +50,8 @@ for rootFile in resJets:
 	# print commandString
 	os.system("%s" % commandString)
 	i = i + 1
-	print ("combined %d of %d file-sets in resJets" % (i, len(resJets)))
-print("done resJets:)")
+	print ("Combined %d of %d file-sets in resJets" % (i, len(resJets)))
+print("Done resJets:)\n\n")
 
 
 
@@ -66,8 +65,8 @@ for rootFile in Resolutions:
 	# print commandString
 	os.system("%s" % commandString)
 	i = i + 1
-	print ("combined %d of %d file-sets in Resolutions" % (i, len(Resolutions)))
-print("done Resolutions:)")
+	print ("Combined %d of %d file-sets in Resolutions" % (i, len(Resolutions)))
+print("Done Resolutions:)\n\n")
 
 
 
@@ -81,8 +80,8 @@ for rootFile in Turnons:
 	# print commandString
 	os.system("%s" % commandString)
 	i = i + 1
-	print ("combined %d of %d file-sets in Turnons" % (i, len(Turnons)))
-print("done Turnons:)")
+	print ("Combined %d of %d file-sets in Turnons" % (i, len(Turnons)))
+print("Done Turnons:)\n\n")
 
 
 
@@ -96,8 +95,8 @@ for rootFile in TurnonsJets:
 	# print commandString
 	os.system("%s" % commandString)
 	i = i + 1
-	print ("combined %d of %d file-sets in TurnonsJets" % (i, len(TurnonsJets)))
-print("done TurnonsJets:)")
+	print ("Combined %d of %d file-sets in TurnonsJets" % (i, len(TurnonsJets)))
+print("Done TurnonsJets:)\n\n")
 
 
 
@@ -111,8 +110,8 @@ for rootFile in xy:
 	# print commandString
 	os.system("%s" % commandString)
 	i = i + 1
-	print ("combined %d of %d file-sets in xy" % (i, len(xy)))
-print("done xy:)")
+	print ("Combined %d of %d file-sets in xy" % (i, len(xy)))
+print("Done xy:)\n\n")
 
 
 
@@ -126,6 +125,6 @@ for rootFile in xyJets:
 	# print commandString
 	os.system("%s" % commandString)
 	i = i + 1
-	print ("combined %d of %d file-sets in xyJets" % (i, len(xyJets)))
-print("done xyJets:)")
+	print ("Combined %d of %d file-sets in xyJets" % (i, len(xyJets)))
+print("Done xyJets:)\n\n")
 
