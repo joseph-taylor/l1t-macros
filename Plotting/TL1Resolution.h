@@ -84,12 +84,11 @@ void TL1Resolution::DrawPlots()
     fPlot[0]->SetLineColor(kBlue-4);
     fPlot[0]->SetMarkerColor(kBlue-4);
     fPlot[0]->Sumw2();
-    fPlot[0]->Scale(1./fPlot[0]->Integral());
     fPlot[0]->SetMinimum(0.0);
     fPlot[0]->Draw("pe");
     fPlot[0]->Draw("histsame");
     fRootFile->WriteTObject(fPlot[0]);
-
+    fPlot[0]->Scale(1./fPlot[0]->Integral()); // normalise after saving .root file
     //TF1 * fitFcn(new TF1(Form("fit_%s",fPlot[0]->GetName()),"gaus(0)",-1,3));
     //fPlot[0]->Fit(fitFcn,"E0");
     //for(int i=0; i<10; ++i) fPlot[0]->Fit(fitFcn,"E0M");
@@ -120,13 +119,13 @@ void TL1Resolution::DrawPlots()
     {
         this->SetColor(fPlot[i+1], i, this->GetPuType().size());
         fPlot[i+1]->Sumw2();
-        fPlot[i+1]->Scale(1./fPlot[i+1]->Integral());
         fPlot[i+1]->SetMinimum(0.0);
         fPlot[i+1]->SetMaximum(1.1*fPlot[i+1]->GetMaximum());
         if( i==0 ) fPlot[i+1]->Draw("pe");
         else fPlot[i+1]->Draw("pesame");
         fPlot[i+1]->Draw("histsame");
         fRootFile->WriteTObject(fPlot[i+1]);
+        fPlot[i+1]->Scale(1./fPlot[i+1]->Integral()); // normalise after saving .root file
 
         TF1 * fitFcn2(new TF1(Form("fit_%s",fPlot[i+1]->GetName()),"gaus(0)",-1,3));
         //fPlot[i+1]->Fit(fitFcn2,"E0");
