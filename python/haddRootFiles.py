@@ -43,7 +43,7 @@ os.system("mkdir combinedRuns/xyJets/")
 i = 0
 for rootFile in resJets:
 
-	commandString = "hadd combinedRuns/resJets/" + rootFile + " "
+	commandString = "hadd -k combinedRuns/resJets/" + rootFile + " "
 	for runNumber in listOfRunsForPython:
 		commandString = commandString + "resJets/run" + runNumber +  "/" + rootFile + " "
 
@@ -58,7 +58,7 @@ print("Done resJets:)\n\n")
 i = 0
 for rootFile in Resolutions:
 
-	commandString = "hadd combinedRuns/Resolutions/" + rootFile + " "
+	commandString = "hadd -k combinedRuns/Resolutions/" + rootFile + " "
 	for runNumber in listOfRunsForPython:
 		commandString = commandString + "Resolutions/run" + runNumber +  "/" + rootFile + " "
 
@@ -73,7 +73,7 @@ print("Done Resolutions:)\n\n")
 i = 0
 for rootFile in Turnons:
 
-	commandString = "hadd combinedRuns/Turnons/" + rootFile + " "
+	commandString = "hadd -k combinedRuns/Turnons/" + rootFile + " "
 	for runNumber in listOfRunsForPython:
 		commandString = commandString + "Turnons/run" + runNumber +  "/" + rootFile + " "
 
@@ -88,7 +88,7 @@ print("Done Turnons:)\n\n")
 i = 0
 for rootFile in TurnonsJets:
 
-	commandString = "hadd combinedRuns/TurnonsJets/" + rootFile + " "
+	commandString = "hadd -k combinedRuns/TurnonsJets/" + rootFile + " "
 	for runNumber in listOfRunsForPython:
 		commandString = commandString + "TurnonsJets/run" + runNumber +  "/" + rootFile + " "
 
@@ -103,7 +103,7 @@ print("Done TurnonsJets:)\n\n")
 i = 0
 for rootFile in xy:
 
-	commandString = "hadd combinedRuns/xy/" + rootFile + " "
+	commandString = "hadd -k combinedRuns/xy/" + rootFile + " "
 	for runNumber in listOfRunsForPython:
 		commandString = commandString + "xy/run" + runNumber +  "/" + rootFile + " "
 
@@ -118,7 +118,7 @@ print("Done xy:)\n\n")
 i = 0
 for rootFile in xyJets:
 
-	commandString = "hadd combinedRuns/xyJets/" + rootFile + " "
+	commandString = "hadd -k combinedRuns/xyJets/" + rootFile + " "
 	for runNumber in listOfRunsForPython:
 		commandString = commandString + "xyJets/run" + runNumber +  "/" + rootFile + " "
 
