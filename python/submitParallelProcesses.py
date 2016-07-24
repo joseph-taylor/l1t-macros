@@ -1,4 +1,5 @@
 import os
+from runList import listOfRunsForPython
 
 # TORUN, do so from jobLogs directory
 # $ python /afs/cern.ch/user/t/taylor/l1t-macros/python/submitParallelProcesses.py
@@ -6,8 +7,9 @@ import os
 # all outputs form these batch jobs will be beaneath this dir
 # require many many quotes...
 
-batchJobSaveLabel = '"parallelRunning_ICHEPv1"'
-numberOfFiles = 49
+batchJobSaveLabel = '"parallelRunning_ICHEPv2"'
+# numberOfFiles = 49
+numberOfFiles = len(listOfRunsForPython)
 
 # want to set this length as the actual length of the vector of run entries.
 for i in range (0,numberOfFiles):
