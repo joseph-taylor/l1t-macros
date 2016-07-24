@@ -141,11 +141,12 @@ vector<double> bins()
 vector<double> binsHF()
 {
     vector<double> temp;
-    for(double binLowerEdge= 0.0; binLowerEdge< 120.0; binLowerEdge+=2.0) temp.push_back(binLowerEdge);
-    for(double binLowerEdge=120.0; binLowerEdge< 150.0; binLowerEdge+=5.0) temp.push_back(binLowerEdge);        
-    for(double binLowerEdge=150.0; binLowerEdge< 180.0; binLowerEdge+=10.0) temp.push_back(binLowerEdge);
-    for(double binLowerEdge=180.0; binLowerEdge< 300.0; binLowerEdge+=20.0) temp.push_back(binLowerEdge);
-    for(double binLowerEdge=300.0; binLowerEdge< 400.1; binLowerEdge+=50.0) temp.push_back(binLowerEdge);
+    for(double binLowerEdge=  0.0; binLowerEdge< 150.0; binLowerEdge+= 2.0) temp.push_back(binLowerEdge);      
+    for(double binLowerEdge=150.0; binLowerEdge< 180.0; binLowerEdge+= 5.0) temp.push_back(binLowerEdge);
+    for(double binLowerEdge=180.0; binLowerEdge< 200.0; binLowerEdge+=10.0) temp.push_back(binLowerEdge);
+    for(double binLowerEdge=200.0; binLowerEdge< 220.0; binLowerEdge+=20.0) temp.push_back(binLowerEdge);  
+    for(double binLowerEdge=220.0; binLowerEdge< 300.0; binLowerEdge+=40.0) temp.push_back(binLowerEdge);            
+    for(double binLowerEdge=300.0; binLowerEdge< 400.1; binLowerEdge+=100.0) temp.push_back(binLowerEdge);
 //    for(double binLowerEdge= 40.0; binLowerEdge< 70.0; binLowerEdge+= 2.5) temp.push_back(binLowerEdge);
 //    for(double binLowerEdge= 70.0; binLowerEdge<200.0; binLowerEdge+= 5.0) temp.push_back(binLowerEdge);
 //    for(double binLowerEdge=200.0; binLowerEdge<300.0; binLowerEdge+=10.0) temp.push_back(binLowerEdge);

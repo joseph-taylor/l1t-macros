@@ -124,8 +124,8 @@ vector<double> metBins()
     for(double binLowerEdge=  0.0; binLowerEdge< 40.0; binLowerEdge+= 1.0) temp.push_back(binLowerEdge);
     for(double binLowerEdge= 40.0; binLowerEdge< 70.0; binLowerEdge+= 2.0) temp.push_back(binLowerEdge);
     for(double binLowerEdge= 70.0; binLowerEdge<100.0; binLowerEdge+= 2.0) temp.push_back(binLowerEdge);
-    for(double binLowerEdge=100.0; binLowerEdge<160.0; binLowerEdge+=5.0) temp.push_back(binLowerEdge);
-    for(double binLowerEdge=160.0; binLowerEdge<200.1; binLowerEdge+=10.0) temp.push_back(binLowerEdge);
+    for(double binLowerEdge=100.0; binLowerEdge<160.0; binLowerEdge+= 2.0) temp.push_back(binLowerEdge);
+    for(double binLowerEdge=160.0; binLowerEdge<200.1; binLowerEdge+= 5.0) temp.push_back(binLowerEdge);
 
     return temp;
 }
