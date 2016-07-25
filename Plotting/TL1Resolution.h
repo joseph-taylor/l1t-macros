@@ -18,6 +18,7 @@ class TL1Resolution : public TL1Plots
     public:
         ~TL1Resolution();
 
+        virtual void OverwritePlots();
         virtual void InitPlots();
         virtual void Fill(const double & xVal, const double & yVal, const int & pu);
         virtual void DrawPlots();
@@ -48,6 +49,37 @@ TL1Resolution::~TL1Resolution()
 {
     fRootFile->Close();
 }
+
+
+void TL1Resolution::OverwritePlots()
+{
+    fPlot.clear(); // make sure this is empty
+    TFile * rootFile = TFile::Open(this->GetOverwriteRootFilename().c_str(),"READ");
+
+    fRootFile = new TFile(Form("%s/res_%s_overwrite.root",this->GetOutDir().c_str(),this->GetOutName().c_str()),"RECREATE");
+    
+    std::vector<TH1F*> temp;
+    std::string inHistname = this->GetOverwriteHistname();
+    std::cout << inHistname << std::endl; //to debug
+    fPlot.emplace_back((TH1F*)rootFile->Get(inHistname.c_str()));
+    fPlot.back()->SetDirectory(0);
+    fPlot.back()->GetXaxis()->SetTitle(fXTitle.c_str());
+    fPlot.back()->GetYaxis()->SetTitle("Number of Entries");
+    // this->SetColor(temp.back(), i, fSeeds.size());
+
+    for(int ipu=0; ipu<this->GetPuType().size(); ++ipu)
+    {
+        std::string inHistnameWithPU = inHistname.substr(0, inHistname.size()-5) + "_l1met%s"; // hack to deal with inconsisten "_"s in output files
+        std::cout << Form(inHistnameWithPU.c_str(),this->GetPuType()[ipu].c_str()) << std::endl;
+        fPlot.emplace_back((TH1F*)rootFile->Get(Form(inHistnameWithPU.c_str(),this->GetPuType()[ipu].c_str())));
+        fPlot.back()->SetDirectory(0);
+        fPlot.back()->GetXaxis()->SetTitle(fXTitle.c_str());
+        fPlot.back()->GetYaxis()->SetTitle("Number of Entries");
+        // this->SetColor(temp.back(), ipu, this->GetPuType().size());
+    }    
+    rootFile->Delete();
+}
+
 
 void TL1Resolution::InitPlots()
 {

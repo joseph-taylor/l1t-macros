@@ -10,6 +10,8 @@ class TL1Plots
         virtual void InitPlots() = 0;
         virtual void Fill(const double & xVal, const double & yVal, const int & pu) = 0;
         virtual void DrawPlots() = 0;
+        virtual void OverwritePlots() = 0;
+        virtual void SetOverwriteNames(const std::string & owRootName, const std::string & owHistName);
 
         virtual void SetSample(const std::string & sampleName, const std::string & sampleTitle);
         virtual void SetTrigger(const std::string & triggerName, const std::string & triggerTitle);
@@ -33,6 +35,8 @@ class TL1Plots
         std::string GetAddMark() const;
         std::vector<std::string> GetPuType() const;
         std::vector<int> GetPuBins() const;
+        std::string GetOverwriteRootFilename() const;
+        std::string GetOverwriteHistname() const;
 
     private:
         std::string fSampleName, fTriggerName, fRun;
@@ -41,8 +45,26 @@ class TL1Plots
         std::string fAddMark;
         std::vector<std::string> fPuType;
         std::vector<int> fPuBins;
+        std::string fOverwriteRootFilename;
+        std::string fOverwriteHistname;
 
 };
+
+void TL1Plots::SetOverwriteNames(const std::string & owRootName, const std::string & owHistName)
+{
+    fOverwriteRootFilename = owRootName;
+    fOverwriteHistname = owHistName;
+}
+
+std::string TL1Plots::GetOverwriteRootFilename() const
+{
+    return fOverwriteRootFilename;
+}
+
+std::string TL1Plots::GetOverwriteHistname() const
+{
+    return fOverwriteHistname;
+}
 
 void TL1Plots::SetSample(const std::string & sampleName, const std::string & sampleTitle)
 {

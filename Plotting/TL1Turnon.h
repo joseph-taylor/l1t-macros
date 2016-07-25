@@ -19,6 +19,7 @@ class TL1Turnon : public TL1Plots
     public:
         ~TL1Turnon();
 
+        virtual void OverwritePlots();
         virtual void InitPlots();
         virtual void Fill(const double & xVal, const double & seedVal, const int & pu);
         virtual void DrawPlots();
@@ -53,6 +54,38 @@ TL1Turnon::~TL1Turnon()
 {
     fPlotsRoot->Close();
     fTurnonsRoot->Close();
+}
+
+void TL1Turnon::OverwritePlots()
+{
+    fPlots.clear(); // make sure this is empty
+    TFile * rootFile = TFile::Open(this->GetOverwriteRootFilename().c_str(),"READ");
+
+    fPlotsRoot = new TFile(Form("%s/dists_%s_overwrite.root",this->GetOutDir().c_str(),this->GetOutName().c_str()),"RECREATE");
+    fTurnonsRoot = new TFile(Form("%s/effs_%s_overwrite.root",this->GetOutDir().c_str(),this->GetOutName().c_str()),"RECREATE");
+    for(unsigned i=0; i<fSeeds.size(); ++i)
+    {
+        std::vector<TH1F*> temp;
+        std::string inHistname = this->GetOverwriteHistname()+"_%g";
+        temp.push_back((TH1F*)rootFile->Get(Form(inHistname.c_str(),fSeeds[i])));
+        temp.back()->SetDirectory(0);
+        temp.back()->GetXaxis()->SetTitle(fXTitle.c_str());
+        temp.back()->GetYaxis()->SetTitle("Number of Entries");
+        this->SetColor(temp.back(), i, fSeeds.size());
+
+        for(int ipu=0; ipu<this->GetPuType().size(); ++ipu)
+        {
+            std::string inHistnameWithPU = inHistname + "_%s";
+            std::cout << Form(inHistnameWithPU.c_str(),fSeeds[i],this->GetPuType()[ipu].c_str()) << std::endl;
+            temp.push_back((TH1F*)rootFile->Get(Form(inHistnameWithPU.c_str(),fSeeds[i],this->GetPuType()[ipu].c_str())));
+            temp.back()->SetDirectory(0);
+            temp.back()->GetXaxis()->SetTitle(fXTitle.c_str());
+            temp.back()->GetYaxis()->SetTitle("Number of Entries");
+            this->SetColor(temp.back(), ipu, this->GetPuType().size());
+        }
+        fPlots.push_back(temp);
+    }
+    rootFile->Delete();
 }
 
 void TL1Turnon::InitPlots()

@@ -1,12 +1,11 @@
 #include <string>
 #include <vector>
 
-#include "Plotting/tdrstyle.C"
-#include "Event/TL1EventClass.h"
-#include "Utilities/TL1Progress.C"
-#include "Utilities/TL1DateTime.C"
-#include "Plotting/TL1Turnon.h"
-#include "runDirectories.cxx"
+#include "../Plotting/tdrstyle.C"
+#include "../Event/TL1EventClass.h"
+#include "../Utilities/TL1Progress.C"
+#include "../Utilities/TL1DateTime.C"
+#include "../Plotting/TL1Turnon.h"
 
 vector<double> metBins();
 vector<double> mhtBins();
@@ -14,24 +13,21 @@ vector<double> ettBins();
 vector<double> httBins();
 void SetMyStyle(int palette, double rmarg, TStyle * myStyle);
 
-void makeTurnons(unsigned runChoiceIndex, std::string batchJobSaveLabel)
+void plotTurnons()
 {
     TStyle * myStyle(new TStyle(TDRStyle()));
     SetMyStyle(55, 0.07, myStyle);
 
-    std::vector<std::string> inDir;
-    inDir.push_back(vecOfDirs[runChoiceIndex]);
-    std::string run = "run" + vecOfRuns[runChoiceIndex];
+    std::string run = "6.3fb^{-1}";
+    std::string jobSaveLabel = "parallelRunning_ICHEPv2/";
     std::string outDirBase = "/afs/cern.ch/user/t/taylor/l1t-macros/output_plots/";
-    std::string outDir = outDirBase + batchJobSaveLabel + "/Turnons/" + run;
+    std::string outDir = outDirBase + jobSaveLabel + "combinedRuns/Turnons/";
     std::vector<std::string> puType = {"0PU13","14PU21","22PU"};
     std::vector<int> puBins = {0,14,22,999};
     std::string sample = "Data";
     std::string triggerName = "SingleMu";
     std::string triggerTitle = "Single Muon";
     bool doFit = false;
-
-    TL1EventClass * event(new TL1EventClass(inDir));
     std::vector<TL1Turnon*> turnons;
 
     // caloMetBE
@@ -42,6 +38,8 @@ void makeTurnons(unsigned runChoiceIndex, std::string batchJobSaveLabel)
     turnons[0]->SetSeed("l1MetSeed","L1 MET");
     turnons[0]->SetOutName(triggerName+"_caloMetBE_l1MetSeeds");
     turnons[0]->SetFit(doFit);
+    std::string t0rootFilePath = outDir + "dists_SingleMu_caloMetBE_l1MetSeeds.root";
+    turnons[0]->SetOverwriteNames(t0rootFilePath.c_str(),"dist_caloMetBE_l1MetSeed");
 
     // mht
     // turnons.emplace_back(new TL1Turnon());
@@ -69,7 +67,9 @@ void makeTurnons(unsigned runChoiceIndex, std::string batchJobSaveLabel)
     turnons[1]->SetSeed("l1Htt","L1 HTT");
     turnons[1]->SetOutName(triggerName+"_recoHtt_l1HttSeeds");
     turnons[1]->SetFit(doFit);
-    
+    std::string t1rootFilePath = outDir + "dists_SingleMu_recoHtt_l1HttSeeds.root";
+    turnons[1]->SetOverwriteNames(t1rootFilePath.c_str(),"dist_recoHtt_l1Htt");   
+
     for(auto it=turnons.begin(); it!=turnons.end(); ++it)
     {
         (*it)->SetSample(sample,"");
@@ -78,32 +78,7 @@ void makeTurnons(unsigned runChoiceIndex, std::string batchJobSaveLabel)
         (*it)->SetOutDir(outDir);
         (*it)->SetPuType(puType);
         (*it)->SetPuBins(puBins);
-        (*it)->InitPlots();
-    }
-
-    unsigned NEntries = event->GetPEvent()->GetNEntries();
-    while( event->Next() )
-    {
-        unsigned position = event->GetPEvent()->GetPosition()+1;
-        TL1Progress::PrintProgressBar(position, NEntries);
-
-        int pu = event->GetPEvent()->fVertex->nVtx;
-        auto sums = event->GetPEvent()->fSums;
-
-        //----- MHT -----//
-        //turnons[1]->Fill(event->GetPEvent()->fSums->mHt, event->fL1Mht, pu);
-
-        //----- HTT -----//
-        turnons[1]->Fill(event->GetPEvent()->fSums->Ht, event->fL1Htt, pu);
-
-        if( !event->fMuonFilterPassFlag ) continue;
-
-        //----- MET -----//
-        if( event->fMetFilterPassFlag )
-            turnons[0]->Fill(sums->caloMetBE, event->fL1Met, pu);
-
-        //----- ETT -----//
-        //turnons[2]->Fill(event->GetPEvent()->fSums->caloSumEtBE, event->fL1Ett, pu);
+        (*it)->OverwritePlots();
     }
 
     for(auto it=turnons.begin(); it!=turnons.end(); ++it)
