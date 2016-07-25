@@ -2,12 +2,11 @@
 #include <vector>
 #include <algorithm>
 
-#include "Plotting/tdrstyle.C"
-#include "Event/TL1EventClass.h"
-#include "Utilities/TL1Progress.C"
-#include "Utilities/TL1DateTime.C"
-#include "Plotting/TL1XvsY.h"
-#include "runDirectories.cxx"
+#include "../Plotting/tdrstyle.C"
+#include "../Event/TL1EventClass.h"
+#include "../Utilities/TL1Progress.C"
+#include "../Utilities/TL1DateTime.C"
+#include "../Plotting/TL1XvsY.h"
 
 vector<double> bins(double max);
 vector<double> phiBins();
@@ -15,23 +14,20 @@ vector<double> etaBins();
 double FoldPhi(double phi);
 void SetMyStyle(int palette, double rmarg, TStyle * myStyle);
 
-void makeJetXvsY(unsigned runChoiceIndex, std::string batchJobSaveLabel)
+void plotJetXvsY()
 {
     TStyle * myStyle(new TStyle(TDRStyle()));
     SetMyStyle(57, 0.14, myStyle);
 
-    std::vector<std::string> inDir;
-    inDir.push_back(vecOfDirs[runChoiceIndex]);
-    std::string run = "run" + vecOfRuns[runChoiceIndex];
+    std::string run = "6.3fb^{-1}";
+    std::string jobSaveLabel = "parallelRunning_ICHEPv2/";
     std::string outDirBase = "/afs/cern.ch/user/t/taylor/l1t-macros/output_plots/";
-    std::string outDir = outDirBase + batchJobSaveLabel + "/xyJets/" + run;
+    std::string outDir = outDirBase + jobSaveLabel + "combinedRuns/xyJets/";
     std::vector<std::string> puType = {"0PU13","14PU21","22PU"};
     std::vector<int> puBins = {0,14,22,999};
     std::string sample = "Data";
     std::string triggerName = "SingleMu";
     std::string triggerTitle = "Single Muon";
-
-    TL1EventClass * event(new TL1EventClass(inDir));
     std::vector<TL1XvsY*> xvsy;
 
     // Jet Et - barrel
@@ -60,6 +56,8 @@ void makeJetXvsY(unsigned runChoiceIndex, std::string batchJobSaveLabel)
     xvsy[0]->SetY("l1JetEt","L1 Jet E_{T} (GeV)");
     xvsy[0]->SetOutName(triggerName+"_jetEt_vs_l1JetEt_barrel-endcap");
     xvsy[0]->SetAddMark("|#eta| < 3.0");
+    std::string t0rootFilePath = outDir + "xy_SingleMu_jetEt_vs_l1JetEt_barrel-endcap.root";
+    xvsy[0]->SetOverwriteNames(t0rootFilePath.c_str(),"xy_jetEt_vs_l1JetEt");
 
     // Jet Et - HF
     xvsy.emplace_back(new TL1XvsY());
@@ -69,6 +67,8 @@ void makeJetXvsY(unsigned runChoiceIndex, std::string batchJobSaveLabel)
     xvsy[1]->SetY("l1JetEt","L1 Jet E_{T} (GeV)");
     xvsy[1]->SetOutName(triggerName+"_jetEt_vs_l1JetEt_hf");
     xvsy[1]->SetAddMark("|#eta| > 3.0");
+    std::string t1rootFilePath = outDir + "xy_SingleMu_jetEt_vs_l1JetEt_hf.root";
+    xvsy[1]->SetOverwriteNames(t1rootFilePath.c_str(),"xy_jetEt_vs_l1JetEt");
 
     // Jet phi - barrel
     // xvsy.emplace_back(new TL1XvsY());
@@ -96,6 +96,8 @@ void makeJetXvsY(unsigned runChoiceIndex, std::string batchJobSaveLabel)
     xvsy[2]->SetY("l1JetPhi","L1 Jet Phi");
     xvsy[2]->SetOutName(triggerName+"_jetPhi_vs_l1JetPhi_barrel-endcap");
     xvsy[2]->SetAddMark("|#eta| < 3.0");
+    std::string t2rootFilePath = outDir + "xy_SingleMu_jetPhi_vs_l1JetPhi_barrel-endcap.root";
+    xvsy[2]->SetOverwriteNames(t2rootFilePath.c_str(),"xy_jetPhi_vs_l1JetPhi");
 
     // Jet Phi - HF
     xvsy.emplace_back(new TL1XvsY());
@@ -105,6 +107,8 @@ void makeJetXvsY(unsigned runChoiceIndex, std::string batchJobSaveLabel)
     xvsy[3]->SetY("l1JetPhi","L1 Jet Phi");
     xvsy[3]->SetOutName(triggerName+"_jetPhi_vs_l1JetPhi_hf");
     xvsy[3]->SetAddMark("|#eta| > 3.0");
+    std::string t3rootFilePath = outDir + "xy_SingleMu_jetPhi_vs_l1JetPhi_hf.root";
+    xvsy[3]->SetOverwriteNames(t3rootFilePath.c_str(),"xy_jetPhi_vs_l1JetPhi");
 
     // Jet Eta
     xvsy.emplace_back(new TL1XvsY());
@@ -113,6 +117,8 @@ void makeJetXvsY(unsigned runChoiceIndex, std::string batchJobSaveLabel)
     xvsy[4]->SetYBins(etaBins());
     xvsy[4]->SetY("l1JetEta","L1 Jet Eta");
     xvsy[4]->SetOutName(triggerName+"_jetEta_vs_l1JetEta_hf");
+    std::string t4rootFilePath = outDir + "xy_SingleMu_jetEta_vs_l1JetEta.root";
+    xvsy[4]->SetOverwriteNames(t4rootFilePath.c_str(),"xy_jetEta_vs_l1JetEta");
 
     for(auto it=xvsy.begin(); it!=xvsy.end(); ++it)
     {
@@ -122,59 +128,7 @@ void makeJetXvsY(unsigned runChoiceIndex, std::string batchJobSaveLabel)
         (*it)->SetOutDir(outDir);
         (*it)->SetPuType(puType);
         (*it)->SetPuBins(puBins);
-        (*it)->InitPlots();
-    }
-
-    unsigned NEntries = event->GetPEvent()->GetNEntries();
-    while( event->Next() )
-    {
-        unsigned position = event->GetPEvent()->GetPosition()+1;
-        TL1Progress::PrintProgressBar(position, NEntries);
-
-        int pu = event->GetPEvent()->fVertex->nVtx;
-        auto jets = event->GetPEvent()->fJets;
-
-        for(unsigned iRecoJet=0; iRecoJet<jets->nJets; ++iRecoJet)
-        {
-            if( !event->fIsLeadingRecoJet ) continue;
-            if( !event->fIsMatchedL1Jet ) continue;
-
-            int pu = event->GetPEvent()->fVertex->nVtx;
-
-            double recoEt = jets->etCorr[event->fLeadingRecoJetIndex];
-            double recoEta = jets->eta[event->fLeadingRecoJetIndex];
-            double recoPhi = jets->phi[event->fLeadingRecoJetIndex];
-
-            double l1Et = event->fL1JetEt[event->fMatchedL1JetIndex];
-            double l1Eta = event->fL1JetEta[event->fMatchedL1JetIndex];
-            double l1Phi = event->fL1JetPhi[event->fMatchedL1JetIndex];
-            if( abs(recoEta) <= 1.479 )
-            {
-                //xvsy[0]->Fill(recoEt, l1Et, pu);
-                xvsy[0]->Fill(recoEt, l1Et, pu);
-
-                //xvsy[4]->Fill(FoldPhi(recoPhi), FoldPhi(l1Phi), pu);
-                xvsy[2]->Fill(FoldPhi(recoPhi), FoldPhi(l1Phi), pu);
-
-                xvsy[4]->Fill(recoEta, l1Eta, pu);
-            }
-            else if( abs(recoEta) <= 3.0 )
-            {
-                //xvsy[1]->Fill(recoEt, l1Et, pu);
-                xvsy[0]->Fill(recoEt, l1Et, pu);
-
-                //xvsy[5]->Fill(FoldPhi(recoPhi), FoldPhi(l1Phi), pu);
-                xvsy[2]->Fill(FoldPhi(recoPhi), FoldPhi(l1Phi), pu);
-
-                xvsy[4]->Fill(recoEta, l1Eta, pu);
-            }
-            else
-            {
-                xvsy[1]->Fill(recoEt, l1Et, pu);
-                xvsy[3]->Fill(FoldPhi(recoPhi), FoldPhi(l1Phi), pu);
-                xvsy[4]->Fill(recoEta, l1Eta, pu);
-            }
-        }
+        (*it)->OverwritePlots();
     }
 
     for(auto it=xvsy.begin(); it!=xvsy.end(); ++it)

@@ -60,22 +60,19 @@ void TL1Resolution::OverwritePlots()
     
     std::vector<TH1F*> temp;
     std::string inHistname = this->GetOverwriteHistname();
-    std::cout << inHistname << std::endl; //to debug
     fPlot.emplace_back((TH1F*)rootFile->Get(inHistname.c_str()));
     fPlot.back()->SetDirectory(0);
     fPlot.back()->GetXaxis()->SetTitle(fXTitle.c_str());
-    fPlot.back()->GetYaxis()->SetTitle("Number of Entries");
-    // this->SetColor(temp.back(), i, fSeeds.size());
+    fPlot.back()->GetYaxis()->SetTitle("a.u.");
 
     for(int ipu=0; ipu<this->GetPuType().size(); ++ipu)
     {
-        std::string inHistnameWithPU = inHistname.substr(0, inHistname.size()-5) + "_l1met%s"; // hack to deal with inconsisten "_"s in output files
-        std::cout << Form(inHistnameWithPU.c_str(),this->GetPuType()[ipu].c_str()) << std::endl;
+        // std::string inHistnameWithPU = inHistname.substr(0, inHistname.size()-8) + "_l1JetEta%s"; // hack to deal with inconsisten "_"s in output files TEMP.
+        std::string inHistnameWithPU = inHistname + "_%s"; 
         fPlot.emplace_back((TH1F*)rootFile->Get(Form(inHistnameWithPU.c_str(),this->GetPuType()[ipu].c_str())));
         fPlot.back()->SetDirectory(0);
         fPlot.back()->GetXaxis()->SetTitle(fXTitle.c_str());
-        fPlot.back()->GetYaxis()->SetTitle("Number of Entries");
-        // this->SetColor(temp.back(), ipu, this->GetPuType().size());
+        fPlot.back()->GetYaxis()->SetTitle("a.u.");
     }    
     rootFile->Delete();
 }
@@ -91,7 +88,7 @@ void TL1Resolution::InitPlots()
     fPlot.back()->GetYaxis()->SetTitle("a.u.");
     for(int i=0; i<this->GetPuType().size(); ++i)
     {
-        fPlot.emplace_back(new TH1F(Form("res_%s_%s__%s%s",fPlotType.c_str(),fXName.c_str(),fYName.c_str(),this->GetPuType()[i].c_str()),"", fBins.size()-1,&(fBins)[0]));
+        fPlot.emplace_back(new TH1F(Form("res_%s_%s_%s_%s",fPlotType.c_str(),fXName.c_str(),fYName.c_str(),this->GetPuType()[i].c_str()),"", fBins.size()-1,&(fBins)[0]));
         fPlot.back()->SetDirectory(0);
         fPlot.back()->GetXaxis()->SetTitle(GetXAxisTitle().c_str());
         fPlot.back()->GetYaxis()->SetTitle("a.u.");

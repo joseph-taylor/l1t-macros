@@ -1,35 +1,31 @@
 #include <string>
 #include <vector>
 
-#include "Plotting/tdrstyle.C"
-#include "Event/TL1EventClass.h"
-#include "Utilities/TL1Progress.C"
-#include "Utilities/TL1DateTime.C"
-#include "Plotting/TL1Turnon.h"
-#include "runDirectories.cxx"
+#include "../Plotting/tdrstyle.C"
+#include "../Event/TL1EventClass.h"
+#include "../Utilities/TL1Progress.C"
+#include "../Utilities/TL1DateTime.C"
+#include "../Plotting/TL1Turnon.h"
 
 vector<double> bins();
 vector<double> binsHF();
 void SetMyStyle(int palette, double rmarg, TStyle * myStyle);
 
-void makeJetTurnons(unsigned runChoiceIndex, std::string batchJobSaveLabel)
+void plotJetTurnons()
 {
     TStyle * myStyle(new TStyle(TDRStyle()));
     SetMyStyle(55, 0.07, myStyle);
 
-    std::vector<std::string> inDir;
-    inDir.push_back(vecOfDirs[runChoiceIndex]);
-    std::string run = "run" + vecOfRuns[runChoiceIndex];
+    std::string run = "6.3fb^{-1}";
+    std::string jobSaveLabel = "parallelRunning_ICHEPv2/";
     std::string outDirBase = "/afs/cern.ch/user/t/taylor/l1t-macros/output_plots/";
-    std::string outDir = outDirBase + batchJobSaveLabel + "/TurnonsJets/" + run;
+    std::string outDir = outDirBase + jobSaveLabel + "combinedRuns/TurnonsJets/";
     std::vector<std::string> puType = {"0PU13","14PU21","22PU"};
     std::vector<int> puBins = {0,14,22,999};
     std::string sample = "Data";
     std::string triggerName = "SingleMu";
     std::string triggerTitle = "Single Muon";
     bool doFit = false;
-
-    TL1EventClass * event(new TL1EventClass(inDir));
     std::vector<TL1Turnon*> turnons;
 
     // Jet Et - barrel
@@ -61,6 +57,8 @@ void makeJetTurnons(unsigned runChoiceIndex, std::string batchJobSaveLabel)
     turnons[0]->SetOutName(triggerName+"_recoJetEt_l1JetEtSeeds_barrel-endcap");
     turnons[0]->SetFit(doFit);
     turnons[0]->SetAddMark("|#eta| < 3.0");
+    std::string t0rootFilePath = outDir + "dists_SingleMu_recoJetEt_l1JetEtSeeds_barrel-endcap.root";
+    turnons[0]->SetOverwriteNames(t0rootFilePath.c_str(),"dist_recoJetEt_l1JetEt");
 
     // Jet Et - HF
     turnons.emplace_back(new TL1Turnon());
@@ -71,6 +69,8 @@ void makeJetTurnons(unsigned runChoiceIndex, std::string batchJobSaveLabel)
     turnons[1]->SetOutName(triggerName+"_recoJetEt_l1JetEtSeeds_hf");
     turnons[1]->SetFit(doFit);
     turnons[1]->SetAddMark("|#eta| > 3.0");
+    std::string t1rootFilePath = outDir + "dists_SingleMu_recoJetEt_l1JetEtSeeds_hf.root";
+    turnons[1]->SetOverwriteNames(t1rootFilePath.c_str(),"dist_recoJetEt_l1JetEt");
 
     for(auto it=turnons.begin(); it!=turnons.end(); ++it)
     {
@@ -80,41 +80,7 @@ void makeJetTurnons(unsigned runChoiceIndex, std::string batchJobSaveLabel)
         (*it)->SetOutDir(outDir);
         (*it)->SetPuType(puType);
         (*it)->SetPuBins(puBins);
-        (*it)->InitPlots();
-    }
-
-    unsigned NEntries = event->GetPEvent()->GetNEntries();
-    while( event->Next() )
-    {
-        unsigned position = event->GetPEvent()->GetPosition()+1;
-        TL1Progress::PrintProgressBar(position, NEntries);
-
-        if( !event->fIsLeadingRecoJet ) continue;
-        if( !event->fIsMatchedL1Jet ) continue;
-
-        int pu = event->GetPEvent()->fVertex->nVtx;
-
-        auto recoJet = event->GetPEvent()->fJets;
-        double recoEt = recoJet->etCorr[event->fLeadingRecoJetIndex];
-        double recoEta = recoJet->eta[event->fLeadingRecoJetIndex];
-        double recoPhi = recoJet->phi[event->fLeadingRecoJetIndex];
-
-        double l1Et = event->fL1JetEt[event->fMatchedL1JetIndex];
-        double l1Eta = event->fL1JetEta[event->fMatchedL1JetIndex];
-        double l1Phi = event->fL1JetPhi[event->fMatchedL1JetIndex];
-
-        if( abs(recoEta) <= 1.479 )
-        {
-            //turnons[0]->Fill(recoEt, l1Et, pu);
-            turnons[0]->Fill(recoEt, l1Et, pu);
-        }
-        else if( abs(recoEta) <= 3.0 )
-        {
-            //turnons[1]->Fill(recoEt, l1Et, pu);
-            turnons[0]->Fill(recoEt, l1Et, pu);
-        }
-        else
-            turnons[1]->Fill(recoEt, l1Et, pu);
+        (*it)->OverwritePlots();
     }
 
     for(auto it=turnons.begin(); it!=turnons.end(); ++it)

@@ -1,12 +1,11 @@
 #include <string>
 #include <vector>
 
-#include "Plotting/tdrstyle.C"
-#include "Event/TL1EventClass.h"
-#include "Utilities/TL1Progress.C"
-#include "Utilities/TL1DateTime.C"
-#include "Plotting/TL1Resolution.h"
-#include "runDirectories.cxx"
+#include "../Plotting/tdrstyle.C"
+#include "../Event/TL1EventClass.h"
+#include "../Utilities/TL1Progress.C"
+#include "../Utilities/TL1DateTime.C"
+#include "../Plotting/TL1Resolution.h"
 
 // run locally with:
 // $ root -q -b -l 'makeJetResolutions.cxx(*)'
@@ -16,23 +15,20 @@ std::vector<double> bins(std::string plotType);
 void SetMyStyle(int palette, double rmarg, TStyle * myStyle);
 double FoldPhi(double phi);
 
-void makeJetResolutions(unsigned runChoiceIndex, std::string batchJobSaveLabel)
+void plotJetResolutions()
 {
     TStyle * myStyle(new TStyle(TDRStyle()));
     SetMyStyle(55, 0.07, myStyle);
 
-    std::vector<std::string> inDir;
-    inDir.push_back(vecOfDirs[runChoiceIndex]);
-    std::string run = "run" + vecOfRuns[runChoiceIndex];
+    std::string run = "6.3fb^{-1}";
+    std::string jobSaveLabel = "parallelRunning_ICHEPv2redoRESO/";
     std::string outDirBase = "/afs/cern.ch/user/t/taylor/l1t-macros/output_plots/";
-    std::string outDir = outDirBase + batchJobSaveLabel + "/resJets/" + run;
+    std::string outDir = outDirBase + jobSaveLabel + "combinedRuns/resJets/";
     std::vector<std::string> puType = {"0PU13","14PU21","22PU"};
     std::vector<int> puBins = {0,14,22,999};
     std::string sample = "Data";
     std::string triggerName = "SingleMu";
     std::string triggerTitle = "Single Muon";
-
-    TL1EventClass * event(new TL1EventClass(inDir));
     std::vector<TL1Resolution*> resolution;
 
     // Jet Et - barrel
@@ -59,6 +55,8 @@ void makeJetResolutions(unsigned runChoiceIndex, std::string batchJobSaveLabel)
     resolution[0]->SetY("l1JetEt","L1 Jet E_{T}");
     resolution[0]->SetOutName(triggerName+"_jetEt_over_l1JetEt_barrel-endcap");
     resolution[0]->SetAddMark("#splitline{E_{T}^{offline} > 30 GeV}{|#eta_{jet}^{offline}| < 3.0}");
+    std::string t0rootFilePath = outDir + "res_SingleMu_jetEt_over_l1JetEt_barrel-endcap.root";
+    resolution[0]->SetOverwriteNames(t0rootFilePath.c_str(),"res_Energy_jetEt_l1JetEt");
 
     // Jet Et - HF
     // resolution.emplace_back(new TL1Resolution());
@@ -93,6 +91,8 @@ void makeJetResolutions(unsigned runChoiceIndex, std::string batchJobSaveLabel)
     resolution[1]->SetY("l1JetPhi","#phi_{jet}^{L1}");
     resolution[1]->SetOutName(triggerName+"_jetPhi_over_l1JetPhi_barrel-endcap");
     resolution[1]->SetAddMark("#splitline{E_{T}^{offline} > 30 GeV}{|#eta_{jet}^{offline}| < 3.0}");
+    std::string t1rootFilePath = outDir + "res_SingleMu_jetPhi_over_l1JetPhi_barrel-endcap.root";
+    resolution[1]->SetOverwriteNames(t1rootFilePath.c_str(),"res_Position_jetPhi_l1JetPhi");
 
     // Jet Phi - HF
     // resolution.emplace_back(new TL1Resolution());
@@ -111,6 +111,8 @@ void makeJetResolutions(unsigned runChoiceIndex, std::string batchJobSaveLabel)
     resolution[2]->SetY("l1JetEta","|#eta_{jet}^{L1}|");
     resolution[2]->SetOutName(triggerName+"_jetEta_over_l1JetEta");
     resolution[2]->SetAddMark("E_{T}^{offline} > 30 GeV");
+    std::string t2rootFilePath = outDir + "res_SingleMu_jetEta_over_l1JetEta.root";
+    resolution[2]->SetOverwriteNames(t2rootFilePath.c_str(),"res_Position_jetEta_l1JetEta");
 
     for(auto it=resolution.begin(); it!=resolution.end(); ++it)
     {
@@ -120,59 +122,9 @@ void makeJetResolutions(unsigned runChoiceIndex, std::string batchJobSaveLabel)
         (*it)->SetOutDir(outDir);
         (*it)->SetPuType(puType);
         (*it)->SetPuBins(puBins);
-        (*it)->InitPlots();
+        (*it)->OverwritePlots();
     }
     
-    unsigned NEntries = event->GetPEvent()->GetNEntries();
-    while( event->Next() )
-    {
-        unsigned position = event->GetPEvent()->GetPosition()+1;
-        TL1Progress::PrintProgressBar(position, NEntries);
-
-        for(unsigned iRecoJet=0; iRecoJet<event->GetPEvent()->fJets->nJets; ++iRecoJet)
-        {
-            if( !event->fIsLeadingRecoJet ) continue;
-            if( !event->fIsMatchedL1Jet ) continue;
-
-            int pu = event->GetPEvent()->fVertex->nVtx;
-            auto recoJet = event->GetPEvent()->fJets;
-
-            double recoEt = recoJet->etCorr[event->fLeadingRecoJetIndex];
-            double recoEta = recoJet->eta[event->fLeadingRecoJetIndex];
-            double recoPhi = FoldPhi(recoJet->phi[event->fLeadingRecoJetIndex]);
-
-            double l1Et = event->fL1JetEt[event->fMatchedL1JetIndex];
-            double l1Eta = event->fL1JetEta[event->fMatchedL1JetIndex];
-            double l1Phi = FoldPhi(event->fL1JetPhi[event->fMatchedL1JetIndex]);
-
-            if( abs(recoEta) <= 1.479 )
-            {
-                //if(recoEt!=0.0 && l1Et!=0.0 && recoEt>=30.0) resolution[0]->Fill(recoEt, l1Et, pu);
-                //if(recoPhi!=0.0 && l1Phi!=0.0 && recoEt>=30.0) resolution[4]->Fill(recoPhi, l1Phi, pu);
-
-                if(recoEta!=0.0 && l1Eta!=0.0 && recoEt>=30.0) resolution[2]->Fill(abs(recoEta), abs(l1Eta), pu);
-                if(recoEt>=30.0 && l1Et!=0.0 ) resolution[0]->Fill(recoEt, l1Et, pu);
-                if(recoPhi!=0.0 && l1Phi!=0.0 && recoEt>=30.0) resolution[1]->Fill(recoPhi, l1Phi, pu);
-            }
-            else if( abs(recoEta) <= 3.0 )
-            {
-                //if(recoEt!=0.0 && l1Et!=0.0 && recoEt>=30.0) resolution[1]->Fill(recoEt, l1Et, pu);
-                //if(recoPhi!=0.0 && l1Phi!=0.0 && recoEt>=30.0) resolution[5]->Fill(recoPhi, l1Phi, pu);
-
-                if(recoEta!=0.0 && l1Eta!=0.0 && recoEt>=30.0) resolution[2]->Fill(abs(recoEta), abs(l1Eta), pu);
-                if(recoEt>=30.0 && l1Et!=0.0 ) resolution[0]->Fill(recoEt, l1Et, pu);
-                if(recoPhi!=0.0 && l1Phi!=0.0 && recoEt>=30.0) resolution[1]->Fill(recoPhi, l1Phi, pu);
-            }
-            else
-            {
-                // if(recoEt>=30.0 && l1Et!=0.0) resolution[1]->Fill(recoEt, l1Et, pu);
-                // if(recoPhi!=0.0 && l1Phi!=0.0 && recoEt>=30.0) resolution[3]->Fill(recoPhi, l1Phi, pu);
-                if(recoEta!=0.0 && l1Eta!=0.0 && recoEt>=30.0) resolution[2]->Fill(abs(recoEta), abs(l1Eta), pu);
-            }
-        }
-
-    }
-
     for(auto it=resolution.begin(); it!=resolution.end(); ++it)
         (*it)->DrawPlots();
 }

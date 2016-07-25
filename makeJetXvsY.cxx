@@ -112,7 +112,7 @@ void makeJetXvsY(unsigned runChoiceIndex, std::string batchJobSaveLabel)
     xvsy[4]->SetX("jetEta","Offline Jet Eta");
     xvsy[4]->SetYBins(etaBins());
     xvsy[4]->SetY("l1JetEta","L1 Jet Eta");
-    xvsy[4]->SetOutName(triggerName+"_jetEta_vs_l1JetEta_hf");
+    xvsy[4]->SetOutName(triggerName+"_jetEta_vs_l1JetEta");
 
     for(auto it=xvsy.begin(); it!=xvsy.end(); ++it)
     {

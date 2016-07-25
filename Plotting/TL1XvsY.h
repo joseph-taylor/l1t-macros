@@ -18,6 +18,7 @@ class TL1XvsY : public TL1Plots
     public:
         ~TL1XvsY();
 
+        virtual void OverwritePlots();
         virtual void InitPlots();
         virtual void Fill(const double & xVal, const double & yVal, const int & pu);
         virtual void DrawPlots();
@@ -40,6 +41,31 @@ class TL1XvsY : public TL1Plots
 TL1XvsY::~TL1XvsY()
 {
     fRootFile->Close();
+}
+
+void TL1XvsY::OverwritePlots()
+{
+    fPlot.clear(); // make sure this is empty
+    TFile * rootFile = TFile::Open(this->GetOverwriteRootFilename().c_str(),"READ");
+
+    fRootFile = new TFile(Form("%s/res_%s_overwrite.root",this->GetOutDir().c_str(),this->GetOutName().c_str()),"RECREATE");
+    
+    std::vector<TH2F*> temp;
+    std::string inHistname = this->GetOverwriteHistname();
+    fPlot.emplace_back((TH2F*)rootFile->Get(inHistname.c_str()));
+    fPlot.back()->SetDirectory(0);
+    fPlot.back()->GetXaxis()->SetTitle(fXTitle.c_str());
+    fPlot.back()->GetYaxis()->SetTitle(fYTitle.c_str());
+
+    for(int ipu=0; ipu<this->GetPuType().size(); ++ipu)
+    {
+        std::string inHistnameWithPU = inHistname + "_%s"; // hack to deal with inconsisten "_"s in output files TEMP. needs to be set on 6 for the angular stuffzz..
+        fPlot.emplace_back((TH2F*)rootFile->Get(Form(inHistnameWithPU.c_str(),this->GetPuType()[ipu].c_str())));
+        fPlot.back()->SetDirectory(0);
+        fPlot.back()->GetXaxis()->SetTitle(fXTitle.c_str());
+        fPlot.back()->GetYaxis()->SetTitle(fYTitle.c_str());
+    }    
+    rootFile->Delete();
 }
 
 void TL1XvsY::InitPlots()
