@@ -62,16 +62,16 @@ void TL1Resolution::OverwritePlots()
     std::string inHistname = this->GetOverwriteHistname();
     fPlot.emplace_back((TH1F*)rootFile->Get(inHistname.c_str()));
     fPlot.back()->SetDirectory(0);
-    fPlot.back()->GetXaxis()->SetTitle(fXTitle.c_str());
+    fPlot.back()->GetXaxis()->SetTitle(GetXAxisTitle().c_str());
     fPlot.back()->GetYaxis()->SetTitle("a.u.");
 
     for(int ipu=0; ipu<this->GetPuType().size(); ++ipu)
     {
         // std::string inHistnameWithPU = inHistname.substr(0, inHistname.size()-8) + "_l1JetEta%s"; // hack to deal with inconsisten "_"s in output files TEMP.
-        std::string inHistnameWithPU = inHistname + "_%s"; 
+        std::string inHistnameWithPU = inHistname + "_%s"; // the proper way
         fPlot.emplace_back((TH1F*)rootFile->Get(Form(inHistnameWithPU.c_str(),this->GetPuType()[ipu].c_str())));
         fPlot.back()->SetDirectory(0);
-        fPlot.back()->GetXaxis()->SetTitle(fXTitle.c_str());
+        fPlot.back()->GetXaxis()->SetTitle(GetXAxisTitle().c_str());
         fPlot.back()->GetYaxis()->SetTitle("a.u.");
     }    
     rootFile->Delete();
@@ -112,12 +112,12 @@ void TL1Resolution::DrawPlots()
 
     fPlot[0]->SetLineColor(kBlue-4);
     fPlot[0]->SetMarkerColor(kBlue-4);
-    fPlot[0]->Sumw2();
     fPlot[0]->SetMinimum(0.0);
     fPlot[0]->Draw("pe");
     fPlot[0]->Draw("histsame");
     fRootFile->WriteTObject(fPlot[0]);
-    fPlot[0]->Scale(1./fPlot[0]->Integral()); // normalise after saving .root file
+    fPlot[0]->Sumw2();
+    fPlot[0]->Scale(1./fPlot[0]->Integral()); // normalise and errors after saving .root file
     //TF1 * fitFcn(new TF1(Form("fit_%s",fPlot[0]->GetName()),"gaus(0)",-1,3));
     //fPlot[0]->Fit(fitFcn,"E0");
     //for(int i=0; i<10; ++i) fPlot[0]->Fit(fitFcn,"E0M");
@@ -147,14 +147,15 @@ void TL1Resolution::DrawPlots()
     for(int i=0; i<this->GetPuType().size(); ++i)
     {
         this->SetColor(fPlot[i+1], i, this->GetPuType().size());
-        fPlot[i+1]->Sumw2();
         fPlot[i+1]->SetMinimum(0.0);
         fPlot[i+1]->SetMaximum(1.1*fPlot[i+1]->GetMaximum());
         if( i==0 ) fPlot[i+1]->Draw("pe");
         else fPlot[i+1]->Draw("pesame");
         fPlot[i+1]->Draw("histsame");
         fRootFile->WriteTObject(fPlot[i+1]);
-        fPlot[i+1]->Scale(1./fPlot[i+1]->Integral()); // normalise after saving .root file
+        fPlot[i+1]->Sumw2();
+        fPlot[i+1]->Scale(1./fPlot[i+1]->Integral()); // normalise and errors after saving .root file
+
 
         TF1 * fitFcn2(new TF1(Form("fit_%s",fPlot[i+1]->GetName()),"gaus(0)",-1,3));
         //fPlot[i+1]->Fit(fitFcn2,"E0");
