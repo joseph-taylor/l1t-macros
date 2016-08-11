@@ -20,7 +20,7 @@ void plotJetResolutions()
     TStyle * myStyle(new TStyle(TDRStyle()));
     SetMyStyle(55, 0.07, myStyle);
 
-    std::string run = "6.3fb^{-1}";
+    std::string run = "3.1fb^{-1}";
     std::string jobSaveLabel = "parallelRunning_ICHEPv2redoRESO/";
     std::string outDirBase = "/afs/cern.ch/user/t/taylor/l1t-macros/output_plots/";
     std::string outDir = outDirBase + jobSaveLabel + "combinedRuns/resJets/";

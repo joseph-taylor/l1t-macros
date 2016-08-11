@@ -7,7 +7,7 @@ from runList import listOfRunsForPython
 # all outputs form these batch jobs will be beaneath this dir
 # require many many quotes...
 
-batchJobSaveLabel = '"parallelRunning_ICHEPv2"'
+batchJobSaveLabel = '"runValidation_8Aug2016"'
 # numberOfFiles = 49
 numberOfFiles = len(listOfRunsForPython)
 

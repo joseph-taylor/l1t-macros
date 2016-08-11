@@ -76,7 +76,6 @@ void TL1Turnon::OverwritePlots()
         for(int ipu=0; ipu<this->GetPuType().size(); ++ipu)
         {
             std::string inHistnameWithPU = inHistname + "_%s";
-            std::cout << Form(inHistnameWithPU.c_str(),fSeeds[i],this->GetPuType()[ipu].c_str()) << std::endl;
             temp.push_back((TH1F*)rootFile->Get(Form(inHistnameWithPU.c_str(),fSeeds[i],this->GetPuType()[ipu].c_str())));
             temp.back()->SetDirectory(0);
             temp.back()->GetXaxis()->SetTitle(fXTitle.c_str());
