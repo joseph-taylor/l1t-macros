@@ -142,12 +142,13 @@ void TL1XvsY::DrawCmsStamp()
     latex->SetNDC();
     latex->SetTextFont(42);
     //latex->SetTextAlign(11);
-    latex->DrawLatex(0.15,0.92,"#bf{CMS} #it{Preliminary} 2016 Data");
+    // latex->DrawLatex(0.15,0.92,"#bf{CMS} #it{Preliminary} 2016 Data");
+    latex->DrawLatex(0.15,0.92,"#bf{CMS} #it{Preliminary} 2016 MC"); // HACK TO CHANGE THE TITLE
     if( this->GetSampleName() == "Data" )
     {
         //latex->DrawLatex(0.18,0.80,"
         latex->SetTextAlign(31);
-        std::string runNo = "run " + this->GetRun() + ", ";
+        // std::string runNo = "run " + this->GetRun() + ", ";
         //latex->DrawLatex(0.92, 0.92, Form("%s%s, #sqrt{s} = 13 TeV",runNo.c_str(),this->GetTriggerTitle().c_str()));
         latex->DrawLatex(0.92,0.92,Form("%s (13 TeV)",this->GetRun().c_str()));
     }

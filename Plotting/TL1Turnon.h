@@ -234,8 +234,9 @@ void TL1Turnon::DrawTurnons()
             fTurnonsRoot->WriteTObject(fitTemp[ipu+1]);
 
             std::stringstream entryName;
-            if( ipu < this->GetPuType().size()-1 ) entryName << this->GetPuBins()[ipu] << " #leq PU < " << this->GetPuBins()[ipu+1];
-            else entryName << this->GetPuBins()[ipu] << " #leq PU";
+            // if( ipu < this->GetPuType().size()-1 ) entryName << this->GetPuBins()[ipu] << " #leq PU < " << this->GetPuBins()[ipu+1];
+            // else entryName << this->GetPuBins()[ipu] << " #leq PU";
+            entryName << this->GetPuBins()[ipu] << " #leq PU < " << this->GetPuBins()[ipu+1]; // JOE HACK
             puLeg->AddEntry(temp[ipu+1],entryName.str().c_str());
             entryName.str("");
         }
@@ -275,7 +276,8 @@ void TL1Turnon::DrawCmsStampTurnon()
     line->DrawClone();
     if( this->GetSampleName() == "Data" )
     {
-        latex->DrawLatex(0.15,0.92,"#bf{CMS} #it{Preliminary} 2016 Data");
+        // latex->DrawLatex(0.15,0.92,"#bf{CMS} #it{Preliminary} 2016 Data");
+        latex->DrawLatex(0.15,0.92,"#bf{CMS} #it{Preliminary} 2016 MC"); //JOE HACK
         latex->SetTextAlign(31);
         std::string runNo = "run " + this->GetRun() + ", ";
         //latex->DrawLatex(0.92, 0.92, Form("%s%s, #sqrt{s} = 13 TeV",runNo.c_str(),this->GetTriggerTitle().c_str()));

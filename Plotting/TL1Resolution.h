@@ -165,8 +165,9 @@ void TL1Resolution::DrawPlots()
         //fRootFile->WriteTObject(fitFcn2);
         
         std::stringstream entryName;
-        if( i < this->GetPuType().size()-1 ) entryName << this->GetPuBins()[i] << " #leq PU < " << this->GetPuBins()[i+1];
-        else entryName << this->GetPuBins()[i] << " #leq PU";
+        // if( i < this->GetPuType().size()-1 ) entryName << this->GetPuBins()[i] << " #leq PU < " << this->GetPuBins()[i+1];
+        // else entryName << this->GetPuBins()[i] << " #leq PU";
+        entryName << this->GetPuBins()[i] << " #leq PU < " << this->GetPuBins()[i+1]; //JOE HACK
         leg->AddEntry(fPlot[i+1],entryName.str().c_str());
         entryName.str("");
     }
@@ -223,7 +224,7 @@ void TL1Resolution::DrawCmsStamp(std::string stampPos="Left")
     if( stampPos == "Left" )
     {
         latex->SetTextAlign(11);
-        latex->DrawLatex(0.15,0.92,"#bf{CMS} #it{Preliminary} 2016 Data");
+        latex->DrawLatex(0.15,0.92,"#bf{CMS} #it{Preliminary} 2016 MC"); //HACKED Data<-->MC
     }
     if( stampPos == "Right" )
     {
