@@ -1,3 +1,21 @@
+# for JOE
+
+must change runDirectories.cxx:
+vecOfDirs 
+vecOfRuns (so that they correspond to each other)
+
+must change submitParallelProcesses.py:
+batchJobSaveLabel
+(also maybe the number of files to use)
+
+runList.py and haddRootFiles.py and output_plots/*.cxx
+are used for using multiple files to make a single plot
+
+extra:
+have to hack with DrawCmsStamp in TL1Turnon.h TL1XvsY.h TL1Resolution.h to change title
+
+
+
 # l1t-macros
 
 ## How to make it work
