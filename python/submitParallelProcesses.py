@@ -1,15 +1,16 @@
 import os
 from runList import listOfRunsForPython
 
-# TORUN, do so from jobLogs directory
+# TORUN, do so from jobLogs directory, something like...
 # $ python /afs/cern.ch/user/t/taylor/l1t-macros/python/submitParallelProcesses.py
 
-# all outputs form these batch jobs will be beaneath this dir
+# all outputs from these batch jobs will be beaneath this dir
 # require many many quotes...
+batchJobSaveLabel = '"MC_validation_30sep2016_v6_TRIAL"'
 
-batchJobSaveLabel = '"runValidation_8Aug2016"'
-# numberOfFiles = 49
-numberOfFiles = len(listOfRunsForPython)
+# manually set OR use python list to select number of dirs to use
+numberOfFiles = 1
+# numberOfFiles = len(listOfRunsForPython)
 
 # want to set this length as the actual length of the vector of run entries.
 for i in range (0,numberOfFiles):
