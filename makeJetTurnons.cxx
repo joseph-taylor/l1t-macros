@@ -19,11 +19,11 @@ void makeJetTurnons(unsigned runChoiceIndex, std::string batchJobSaveLabel)
 
     std::vector<std::string> inDir;
     inDir.push_back(vecOfDirs[runChoiceIndex]);
-    std::string run = "run" + vecOfRuns[runChoiceIndex];
+    std::string run = vecOfRuns[runChoiceIndex];
     std::string outDirBase = "/afs/cern.ch/user/t/taylor/l1t-macros/output_plots/";
     std::string outDir = outDirBase + batchJobSaveLabel + "/TurnonsJets/" + run;
-    std::vector<std::string> puType = {"0PU13","14PU21","22PU"};
-    std::vector<int> puBins = {0,14,22,999};
+    std::vector<std::string> puType = {"20PU29","30PU39","40PU49"};
+    std::vector<int> puBins = {20,30,40,50}; //note puBins has one more element than puType
     std::string sample = "Data";
     std::string triggerName = "SingleMu";
     std::string triggerTitle = "Single Muon";
@@ -128,29 +128,41 @@ vector<double> bins()
 {
     vector<double> temp;
     for(double binLowerEdge= 0.0; binLowerEdge< 120.0; binLowerEdge+=2.0) temp.push_back(binLowerEdge);
-    for(double binLowerEdge=120.0; binLowerEdge< 180.0; binLowerEdge+=2.0) temp.push_back(binLowerEdge);
-    for(double binLowerEdge=180.0; binLowerEdge< 300.0; binLowerEdge+=2.0) temp.push_back(binLowerEdge);
-    for(double binLowerEdge=300.0; binLowerEdge< 400.1; binLowerEdge+=5.0) temp.push_back(binLowerEdge);
+    for(double binLowerEdge=120.0; binLowerEdge< 180.0; binLowerEdge+=5.0) temp.push_back(binLowerEdge);
+    for(double binLowerEdge=180.0; binLowerEdge< 300.0; binLowerEdge+=10.0) temp.push_back(binLowerEdge);
+    for(double binLowerEdge=300.0; binLowerEdge< 400.1; binLowerEdge+=20.0) temp.push_back(binLowerEdge);
+
 //    for(double binLowerEdge= 40.0; binLowerEdge< 70.0; binLowerEdge+= 2.5) temp.push_back(binLowerEdge);
 //    for(double binLowerEdge= 70.0; binLowerEdge<200.0; binLowerEdge+= 5.0) temp.push_back(binLowerEdge);
 //    for(double binLowerEdge=200.0; binLowerEdge<300.0; binLowerEdge+=10.0) temp.push_back(binLowerEdge);
 //    for(double binLowerEdge=300.0; binLowerEdge<400.1; binLowerEdge+=20.0) temp.push_back(binLowerEdge);
+
+    // for(double binLowerEdge= 0.0; binLowerEdge< 120.0; binLowerEdge+=10.0) temp.push_back(binLowerEdge);
+    // for(double binLowerEdge=120.0; binLowerEdge< 180.0; binLowerEdge+=20.0) temp.push_back(binLowerEdge);
+    // for(double binLowerEdge=180.0; binLowerEdge< 300.0; binLowerEdge+=40.0) temp.push_back(binLowerEdge);
+    // for(double binLowerEdge=300.0; binLowerEdge< 400.1; binLowerEdge+=50.0) temp.push_back(binLowerEdge);
     return temp;
 }
 
 vector<double> binsHF()
 {
     vector<double> temp;
-    for(double binLowerEdge=  0.0; binLowerEdge< 150.0; binLowerEdge+= 2.0) temp.push_back(binLowerEdge);      
-    for(double binLowerEdge=150.0; binLowerEdge< 180.0; binLowerEdge+= 5.0) temp.push_back(binLowerEdge);
-    for(double binLowerEdge=180.0; binLowerEdge< 200.0; binLowerEdge+=10.0) temp.push_back(binLowerEdge);
-    for(double binLowerEdge=200.0; binLowerEdge< 220.0; binLowerEdge+=20.0) temp.push_back(binLowerEdge);  
-    for(double binLowerEdge=220.0; binLowerEdge< 300.0; binLowerEdge+=40.0) temp.push_back(binLowerEdge);            
+    for(double binLowerEdge=  0.0; binLowerEdge< 150.0; binLowerEdge+= 5.0) temp.push_back(binLowerEdge);      
+    for(double binLowerEdge=150.0; binLowerEdge< 180.0; binLowerEdge+= 10.0) temp.push_back(binLowerEdge);
+    for(double binLowerEdge=180.0; binLowerEdge< 200.0; binLowerEdge+=20.0) temp.push_back(binLowerEdge);
+    for(double binLowerEdge=200.0; binLowerEdge< 240.0; binLowerEdge+=40.0) temp.push_back(binLowerEdge);  
+    for(double binLowerEdge=240.0; binLowerEdge< 300.0; binLowerEdge+=60.0) temp.push_back(binLowerEdge);            
     for(double binLowerEdge=300.0; binLowerEdge< 400.1; binLowerEdge+=100.0) temp.push_back(binLowerEdge);
+
 //    for(double binLowerEdge= 40.0; binLowerEdge< 70.0; binLowerEdge+= 2.5) temp.push_back(binLowerEdge);
 //    for(double binLowerEdge= 70.0; binLowerEdge<200.0; binLowerEdge+= 5.0) temp.push_back(binLowerEdge);
 //    for(double binLowerEdge=200.0; binLowerEdge<300.0; binLowerEdge+=10.0) temp.push_back(binLowerEdge);
 //    for(double binLowerEdge=300.0; binLowerEdge<400.1; binLowerEdge+=20.0) temp.push_back(binLowerEdge);
+
+    // for(double binLowerEdge=  0.0; binLowerEdge< 100.0; binLowerEdge+= 20.0) temp.push_back(binLowerEdge);      
+    // for(double binLowerEdge=100.0; binLowerEdge< 220.0; binLowerEdge+= 40.0) temp.push_back(binLowerEdge);
+    // for(double binLowerEdge=220.0; binLowerEdge< 280.0; binLowerEdge+= 60.0) temp.push_back(binLowerEdge);        
+    // for(double binLowerEdge=280.0; binLowerEdge< 400.0; binLowerEdge+=120.0) temp.push_back(binLowerEdge);
     return temp;
 }
 

@@ -21,11 +21,11 @@ void makeXvsY(unsigned runChoiceIndex, std::string batchJobSaveLabel)
 
     std::vector<std::string> inDir;
     inDir.push_back(vecOfDirs[runChoiceIndex]);
-    std::string run = "run" + vecOfRuns[runChoiceIndex];
+    std::string run = vecOfRuns[runChoiceIndex];
     std::string outDirBase = "/afs/cern.ch/user/t/taylor/l1t-macros/output_plots/";
     std::string outDir = outDirBase + batchJobSaveLabel + "/xy/" + run;
-    std::vector<std::string> puType = {"0PU13","14PU21","22PU"};
-    std::vector<int> puBins = {0,14,22,999};
+    std::vector<std::string> puType = {"20PU29","30PU39","40PU49"};
+    std::vector<int> puBins = {20,30,40,50};
     std::string sample = "Data";
     std::string triggerName = "SingleMu";
     std::string triggerTitle = "Single Muon";
@@ -128,7 +128,7 @@ void makeXvsY(unsigned runChoiceIndex, std::string batchJobSaveLabel)
         //if( recoEtt > 0.0 && l1Ett > 0.0 )
         //    xvsy[2]->Fill(recoEtt, l1Ett, pu);
 
-        if( !event->fMuonFilterPassFlag ) continue;
+        if( !event->fMuonFilterPassFlag ) continue; // JOE COMMENTED IN/OUT
 
         //----- MET -----//
         double recoMet = sums->caloMetBE;

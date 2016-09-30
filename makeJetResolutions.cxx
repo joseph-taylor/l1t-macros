@@ -23,11 +23,11 @@ void makeJetResolutions(unsigned runChoiceIndex, std::string batchJobSaveLabel)
 
     std::vector<std::string> inDir;
     inDir.push_back(vecOfDirs[runChoiceIndex]);
-    std::string run = "run" + vecOfRuns[runChoiceIndex];
+    std::string run = vecOfRuns[runChoiceIndex];
     std::string outDirBase = "/afs/cern.ch/user/t/taylor/l1t-macros/output_plots/";
     std::string outDir = outDirBase + batchJobSaveLabel + "/resJets/" + run;
-    std::vector<std::string> puType = {"0PU13","14PU21","22PU"};
-    std::vector<int> puBins = {0,14,22,999};
+    std::vector<std::string> puType = {"20PU29","30PU39","40PU49"};
+    std::vector<int> puBins = {20,30,40,50};
     std::string sample = "Data";
     std::string triggerName = "SingleMu";
     std::string triggerTitle = "Single Muon";
@@ -182,6 +182,9 @@ std::vector<double> bins(std::string plotType)
     std::vector<double> temp;
     if( plotType == "Position" ) for(double binLowerEdge=-0.3; binLowerEdge<=0.3; binLowerEdge+= 0.005) temp.push_back(binLowerEdge);
     else if( plotType == "Energy" ) for(double binLowerEdge=-1.0; binLowerEdge<=1.5; binLowerEdge+= 0.05) temp.push_back(binLowerEdge);
+    // if( plotType == "Position" ) for(double binLowerEdge=-0.3; binLowerEdge<=0.3; binLowerEdge+= 0.020) temp.push_back(binLowerEdge);
+    // else if( plotType == "Energy" ) for(double binLowerEdge=-1.0; binLowerEdge<=1.5; binLowerEdge+= 0.20) temp.push_back(binLowerEdge);
+
     return temp;
 }
 
