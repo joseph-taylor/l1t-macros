@@ -149,6 +149,7 @@ void TL1EventClass::GetL1Sums()
             if(sumType == l1t::EtSum::EtSumType::kTotalEt)   fL1Ett = et;
             if(sumType == l1t::EtSum::EtSumType::kTotalHt)   fL1Htt = et;
             if(sumType == l1t::EtSum::EtSumType::kMissingEt)
+            // if(sumType == 2) //JOE HACK    
             {
                 fL1Met = et;
                 fL1MetPhi = phi;

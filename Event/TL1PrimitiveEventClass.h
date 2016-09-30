@@ -61,7 +61,7 @@ TL1PrimitiveEventClass::TL1PrimitiveEventClass(std::vector<std::string> inDir) :
     metFilterReco(new TL1DataClass("l1MetFilterRecoTree/MetFilterRecoTree",inDir)),
     muonReco(new TL1DataClass("l1MuonRecoTree/Muon2RecoTree",inDir)),
     recoTree(new TL1DataClass("l1RecoTree/RecoTree",inDir)),
-    upgrade(new TL1DataClass("l1UpgradeTree/L1UpgradeTree",inDir)),
+    upgrade(new TL1DataClass("l1UpgradeTree/L1UpgradeTree",inDir)), //HACK HERE TO CHANGE TO EMU
     fCaloTowers(new L1Analysis::L1AnalysisL1CaloTowerDataFormat()),
     fJets      (new L1Analysis::L1AnalysisRecoJetDataFormat()),
     fSums      (new L1Analysis::L1AnalysisRecoMetDataFormat()),
