@@ -224,7 +224,8 @@ void TL1Resolution::DrawCmsStamp(std::string stampPos="Left")
     if( stampPos == "Left" )
     {
         latex->SetTextAlign(11);
-        latex->DrawLatex(0.15,0.92,"#bf{CMS} #it{Preliminary} 2016 MC"); //HACKED Data<-->MC
+        // latex->DrawLatex(0.15,0.92,"#bf{CMS} #it{Preliminary} 2016 MC"); //HACKED Data<-->MC
+        latex->DrawLatex(0.15,0.92,"#bf{CMS} #it{Simulation Preliminary}");
     }
     if( stampPos == "Right" )
     {

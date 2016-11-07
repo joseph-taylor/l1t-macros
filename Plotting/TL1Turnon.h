@@ -14,6 +14,12 @@
 
 #include "TL1Plots.h"
 
+
+
+TGraphAsymmErrors GetEfficiency(TH1F * total, TH1F * pass);
+
+
+
 class TL1Turnon : public TL1Plots
 {
     public:
@@ -25,7 +31,8 @@ class TL1Turnon : public TL1Plots
         virtual void DrawPlots();
         void DrawCmsStamp(std::string stampPos="Left");
         void DrawTurnons();
-        void DrawCmsStampTurnon();
+        // void DrawCmsStampTurnon();
+        void DrawCmsStampTurnon(const double & max); //overlfow bin version
         TF1 fit(TGraphAsymmErrors * eff, int p50);
 
 
@@ -186,24 +193,116 @@ void TL1Turnon::DrawCmsStamp(std::string stampPos="Left")
     //latex->DrawLatex(0.18,0.92,this->GetAddMark().c_str());
 }
 
+// void TL1Turnon::DrawTurnons()
+// {
+//     TCanvas * nomCan(new TCanvas("c1","c1"));
+//     TLegend * nomLeg(new TLegend(0.62,0.15,0.87,0.15+0.2*(2+fSeeds.size())/5.0,this->GetAddMark().c_str()));
+//     for(int i=1; i<fSeeds.size(); ++i)
+//     {
+//         std::vector<TGraphAsymmErrors*> temp;
+//         temp.emplace_back(new TGraphAsymmErrors(fPlots[i][0], fPlots[0][0]));
+//         temp[0]->SetLineColor(fPlots[i][0]->GetLineColor());
+//         temp[0]->SetMarkerColor(fPlots[i][0]->GetMarkerColor());
+//         temp[0]->GetXaxis()->SetTitle(fPlots[i][0]->GetXaxis()->GetTitle());
+//         temp[0]->GetXaxis()->SetLimits(fXBins.front(), fXBins.back());
+//         temp[0]->GetYaxis()->SetTitle("Efficiency");
+//         temp[0]->SetMinimum(0.0);
+//         temp[0]->SetMaximum(1.1);
+//         nomCan->cd();
+//         if( i == 1 ) temp[0]->Draw("ap");
+//         else temp[0]->Draw("psame");
+//         fTurnonsRoot->WriteTObject(temp[0]);
+
+//         std::vector<TF1*> fitTemp;
+//         fitTemp.emplace_back(new TF1(fit(temp[0], fSeeds[i])));
+//         if( fDoFit ) fitTemp[0]->Draw("apsame");
+//         fTurnonsRoot->WriteTObject(fitTemp[0]);
+//         nomLeg->AddEntry(temp[0], Form("%s > %g",fSeedTitle.c_str(),fSeeds[i]));
+
+//         TCanvas * puCan(new TCanvas(Form("puCan_%i",i),"puCan"));
+//         TLegend * puLeg(new TLegend(0.65,0.15,0.9,0.15+0.08*this->GetPuType().size(),Form("%s > %g",fSeedTitle.c_str(),fSeeds[i])));
+//         for(int ipu=0; ipu<GetPuType().size(); ++ipu)
+//         {
+//             temp.emplace_back(new TGraphAsymmErrors(fPlots[i][ipu+1], fPlots[0][ipu+1]));
+//             temp[ipu+1]->SetLineColor(fPlots[i][ipu+1]->GetLineColor());
+//             temp[ipu+1]->SetMarkerColor(fPlots[i][ipu+1]->GetMarkerColor());
+//             temp[ipu+1]->GetXaxis()->SetTitle(fPlots[i][ipu+1]->GetXaxis()->GetTitle());
+//             temp[ipu+1]->GetXaxis()->SetLimits(fXBins.front(), fXBins.back());
+//             temp[ipu+1]->GetYaxis()->SetTitle("Efficiency");
+//             temp[ipu+1]->SetMinimum(0.0);
+//             temp[ipu+1]->SetMaximum(1.1);
+//             puCan->cd();
+//             if( ipu == 0 ) temp[ipu+1]->Draw("ap");
+//             else temp[ipu+1]->Draw("psame");
+//             fTurnonsRoot->WriteTObject(temp[ipu+1]);
+            
+//             fitTemp.emplace_back(new TF1(fit(temp[ipu+1], fSeeds[i])));
+//             if( fDoFit ) fitTemp[ipu+1]->Draw("apsame");
+//             fTurnonsRoot->WriteTObject(fitTemp[ipu+1]);
+
+//             std::stringstream entryName;
+//             // if( ipu < this->GetPuType().size()-1 ) entryName << this->GetPuBins()[ipu] << " #leq PU < " << this->GetPuBins()[ipu+1];
+//             // else entryName << this->GetPuBins()[ipu] << " #leq PU";
+//             entryName << this->GetPuBins()[ipu] << " #leq PU < " << this->GetPuBins()[ipu+1]; // JOE HACK
+//             puLeg->AddEntry(temp[ipu+1],entryName.str().c_str());
+//             entryName.str("");
+//         }
+//         puLeg->Draw();
+//         DrawCmsStampTurnon();
+//         TLatex * latex = new TLatex();
+//         latex->SetNDC();
+//         latex->SetTextFont(42);
+//         latex->DrawLatex(0.65,0.41,this->GetAddMark().c_str());
+
+//         std::string puOutName = Form("%s/effs_%s_puBins_seed%i.pdf",this->GetOutDir().c_str(),this->GetOutName().c_str(),(int)fSeeds[i]);
+//         puCan->SaveAs(puOutName.c_str());
+//     }
+//     nomCan->cd();
+//     nomLeg->Draw();
+//     DrawCmsStampTurnon();
+
+//     TLatex * nomlatex = new TLatex();
+//     nomlatex->SetNDC();
+//     nomlatex->SetTextFont(42);
+//     nomlatex->SetTextAlign(31);
+//     //nomlatex->DrawLatex(0.8,0.15+0.2*(2+fSeeds.size())/5.0+0.02,"<PU>=14");
+
+//     std::string nomOutName = Form("%s/effs_%s.pdf",this->GetOutDir().c_str(),this->GetOutName().c_str());
+//     nomCan->SaveAs(nomOutName.c_str());
+// }
+
+
+// might add the overflow bin...
 void TL1Turnon::DrawTurnons()
 {
-    TCanvas * nomCan(new TCanvas("c1","c1"));
-    TLegend * nomLeg(new TLegend(0.62,0.15,0.87,0.15+0.2*(2+fSeeds.size())/5.0,this->GetAddMark().c_str()));
+    // TCanvas * nomCan(new TCanvas(Form("can_%f",this->GetRnd()),"c1"));
+    TCanvas * nomCan( new TCanvas("nomCan",""));
+    TLegend * nomLeg(new TLegend(0.58,0.15,0.83,0.15+0.16*(2+fSeeds.size())/5.0,this->GetAddMark().c_str()));
+    TArrow * arrow = new TArrow();
+    double max(0.0);
     for(int i=1; i<fSeeds.size(); ++i)
     {
         std::vector<TGraphAsymmErrors*> temp;
-        temp.emplace_back(new TGraphAsymmErrors(fPlots[i][0], fPlots[0][0]));
+        temp.emplace_back(new TGraphAsymmErrors(GetEfficiency(fPlots[0][0], fPlots[i][0])));
+        arrow->SetLineColor(fPlots[i][0]->GetLineColor());
+        arrow->SetFillColor(fPlots[i][0]->GetLineColor());
         temp[0]->SetLineColor(fPlots[i][0]->GetLineColor());
         temp[0]->SetMarkerColor(fPlots[i][0]->GetMarkerColor());
+        temp[0]->SetFillColor(0);
         temp[0]->GetXaxis()->SetTitle(fPlots[i][0]->GetXaxis()->GetTitle());
-        temp[0]->GetXaxis()->SetLimits(fXBins.front(), fXBins.back());
+        max = temp[0]->GetX()[temp[0]->GetN()-1]+0.9*temp[0]->GetErrorXhigh(temp[0]->GetN()-1);
+        temp[0]->GetXaxis()->SetLimits(temp[0]->GetX()[0]-temp[0]->GetErrorXlow(0), max);
         temp[0]->GetYaxis()->SetTitle("Efficiency");
         temp[0]->SetMinimum(0.0);
         temp[0]->SetMaximum(1.1);
         nomCan->cd();
+        //temp[0]->GetXaxis()->SetRangeUser(100,3500);
         if( i == 1 ) temp[0]->Draw("ap");
         else temp[0]->Draw("psame");
+        arrow->DrawArrow(temp[0]->GetX()[temp[0]->GetN()-1]+0.89*temp[0]->GetErrorXhigh(temp[0]->GetN()-1),
+                temp[0]->GetY()[temp[0]->GetN()-1], max,
+                temp[0]->GetY()[temp[0]->GetN()-1],
+                0.013);
         fTurnonsRoot->WriteTObject(temp[0]);
 
         std::vector<TF1*> fitTemp;
@@ -212,21 +311,31 @@ void TL1Turnon::DrawTurnons()
         fTurnonsRoot->WriteTObject(fitTemp[0]);
         nomLeg->AddEntry(temp[0], Form("%s > %g",fSeedTitle.c_str(),fSeeds[i]));
 
-        TCanvas * puCan(new TCanvas(Form("puCan_%i",i),"puCan"));
+        // TCanvas * puCan(new TCanvas(Form("puCan_%f",this->GetRnd()),""));
+        TCanvas * puCan( new TCanvas("puCan",""));
         TLegend * puLeg(new TLegend(0.65,0.15,0.9,0.15+0.08*this->GetPuType().size(),Form("%s > %g",fSeedTitle.c_str(),fSeeds[i])));
+        double puMax(0.0);
         for(int ipu=0; ipu<GetPuType().size(); ++ipu)
         {
-            temp.emplace_back(new TGraphAsymmErrors(fPlots[i][ipu+1], fPlots[0][ipu+1]));
+            temp.emplace_back(new TGraphAsymmErrors(GetEfficiency(fPlots[0][ipu+1], fPlots[i][ipu+1])));
+            arrow->SetLineColor(fPlots[i][ipu+1]->GetLineColor());
+            arrow->SetFillColor(fPlots[i][ipu+1]->GetLineColor());
             temp[ipu+1]->SetLineColor(fPlots[i][ipu+1]->GetLineColor());
             temp[ipu+1]->SetMarkerColor(fPlots[i][ipu+1]->GetMarkerColor());
+            temp[ipu+1]->SetFillColor(0);
             temp[ipu+1]->GetXaxis()->SetTitle(fPlots[i][ipu+1]->GetXaxis()->GetTitle());
-            temp[ipu+1]->GetXaxis()->SetLimits(fXBins.front(), fXBins.back());
+            puMax = temp[ipu+1]->GetX()[temp[ipu+1]->GetN()-1]+0.9*temp[ipu+1]->GetErrorXhigh(temp[ipu+1]->GetN()-1);
+            temp[ipu+1]->GetXaxis()->SetLimits(temp[ipu+1]->GetX()[0]-temp[ipu+1]->GetErrorXlow(0), puMax);
             temp[ipu+1]->GetYaxis()->SetTitle("Efficiency");
             temp[ipu+1]->SetMinimum(0.0);
             temp[ipu+1]->SetMaximum(1.1);
             puCan->cd();
             if( ipu == 0 ) temp[ipu+1]->Draw("ap");
             else temp[ipu+1]->Draw("psame");
+            arrow->DrawArrow(temp[ipu]->GetX()[temp[ipu]->GetN()-1]+0.89*temp[ipu]->GetErrorXhigh(temp[ipu]->GetN()-1),
+                    temp[ipu]->GetY()[temp[ipu]->GetN()-1], puMax,
+                    temp[ipu]->GetY()[temp[ipu]->GetN()-1],
+                    0.013);
             fTurnonsRoot->WriteTObject(temp[ipu+1]);
             
             fitTemp.emplace_back(new TF1(fit(temp[ipu+1], fSeeds[i])));
@@ -234,25 +343,25 @@ void TL1Turnon::DrawTurnons()
             fTurnonsRoot->WriteTObject(fitTemp[ipu+1]);
 
             std::stringstream entryName;
-            // if( ipu < this->GetPuType().size()-1 ) entryName << this->GetPuBins()[ipu] << " #leq PU < " << this->GetPuBins()[ipu+1];
-            // else entryName << this->GetPuBins()[ipu] << " #leq PU";
-            entryName << this->GetPuBins()[ipu] << " #leq PU < " << this->GetPuBins()[ipu+1]; // JOE HACK
+            if( ipu < this->GetPuType().size()-1 ) entryName << this->GetPuBins()[ipu] << " #leq PU < " << this->GetPuBins()[ipu+1];
+            else entryName << this->GetPuBins()[ipu] << " #leq PU";
             puLeg->AddEntry(temp[ipu+1],entryName.str().c_str());
             entryName.str("");
         }
         puLeg->Draw();
-        DrawCmsStampTurnon();
+        DrawCmsStampTurnon(puMax);
         TLatex * latex = new TLatex();
         latex->SetNDC();
-        latex->SetTextFont(42);
-        latex->DrawLatex(0.65,0.41,this->GetAddMark().c_str());
+        //latex->SetTextFont(42);
+        //latex->DrawLatex(0.65,0.41,this->GetAddMark().c_str());
 
         std::string puOutName = Form("%s/effs_%s_puBins_seed%i.pdf",this->GetOutDir().c_str(),this->GetOutName().c_str(),(int)fSeeds[i]);
         puCan->SaveAs(puOutName.c_str());
+        delete puCan;
     }
     nomCan->cd();
     nomLeg->Draw();
-    DrawCmsStampTurnon();
+    DrawCmsStampTurnon(max);
 
     TLatex * nomlatex = new TLatex();
     nomlatex->SetNDC();
@@ -262,38 +371,69 @@ void TL1Turnon::DrawTurnons()
 
     std::string nomOutName = Form("%s/effs_%s.pdf",this->GetOutDir().c_str(),this->GetOutName().c_str());
     nomCan->SaveAs(nomOutName.c_str());
+    delete nomCan;
 }
 
-void TL1Turnon::DrawCmsStampTurnon()
+
+
+
+
+
+
+// void TL1Turnon::DrawCmsStampTurnon()
+// {
+//     TLatex * latex(new TLatex());
+//     latex->SetNDC();
+//     latex->SetTextFont(42);
+//     double min = fXBins.front();
+//     double max = fXBins.back();
+//     TLine * line(new TLine(min,1.,max,1.));
+//     line->SetLineStyle(7);
+//     line->DrawClone();
+//     if( this->GetSampleName() == "Data" )
+//     {
+//         latex->DrawLatex(0.15,0.92,"#bf{CMS} #it{Preliminary} 2016 Data");
+//         // latex->DrawLatex(0.15,0.92,"#bf{CMS} #it{Preliminary} 2016 MC"); //JOE HACK
+//         latex->SetTextAlign(31);
+//         std::string runNo = "run " + this->GetRun() + ", ";
+//         //latex->DrawLatex(0.92, 0.92, Form("%s%s, #sqrt{s} = 13 TeV",runNo.c_str(),this->GetTriggerTitle().c_str()));
+//         latex->DrawLatex(0.92, 0.92, Form("%s (13 TeV)",this->GetRun().c_str()));
+//     }
+//     else
+//     {
+//         latex->DrawLatex(0.17, 0.80, "#bf{CMS}");
+//         latex->DrawLatex(0.17, 0.75, "#it{Simulation}");
+//         latex->DrawLatex(0.17, 0.70, "#it{Preliminary}");
+//         latex->SetTextAlign(31); 
+//         latex->DrawLatex(0.92, 0.92, Form("%s, #sqrt{s} = 13 TeV",this->GetSampleTitle().c_str()));
+//     }
+//     latex->SetTextAlign(11);
+//     //latex->DrawLatex(0.18,0.92,this->GetAddMark().c_str());
+// }
+
+// overflow bin version
+void TL1Turnon::DrawCmsStampTurnon(const double & max)
 {
     TLatex * latex(new TLatex());
     latex->SetNDC();
     latex->SetTextFont(42);
+    if( this->GetSampleName() == "Data" )
+        // latex->DrawLatex(0.15,0.92,Form("#bf{CMS} #it{Preliminary} %s",this->GetSampleTitle().c_str()));
+        latex->DrawLatex(0.15,0.92,"#bf{CMS} #it{Simulation Preliminary}"); //JOE HACK
+    else
+        latex->DrawLatex(0.15,0.92,Form("#bf{CMS} #it{Simulation Preliminary} %s",this->GetSampleTitle().c_str()));
+    latex->SetTextAlign(31);
+    latex->DrawLatex(0.92,0.92,Form("%s (13 TeV)",this->GetRun().c_str()));
+    //latex->SetTextAlign(32);
+    //latex->DrawLatex(0.82,0.25,this->GetAddMark().c_str());
+
     double min = fXBins.front();
-    double max = fXBins.back();
+    //double max = fXBins.back();
     TLine * line(new TLine(min,1.,max,1.));
     line->SetLineStyle(7);
     line->DrawClone();
-    if( this->GetSampleName() == "Data" )
-    {
-        // latex->DrawLatex(0.15,0.92,"#bf{CMS} #it{Preliminary} 2016 Data");
-        latex->DrawLatex(0.15,0.92,"#bf{CMS} #it{Preliminary} 2016 MC"); //JOE HACK
-        latex->SetTextAlign(31);
-        std::string runNo = "run " + this->GetRun() + ", ";
-        //latex->DrawLatex(0.92, 0.92, Form("%s%s, #sqrt{s} = 13 TeV",runNo.c_str(),this->GetTriggerTitle().c_str()));
-        latex->DrawLatex(0.92, 0.92, Form("%s (13 TeV)",this->GetRun().c_str()));
-    }
-    else
-    {
-        latex->DrawLatex(0.17, 0.80, "#bf{CMS}");
-        latex->DrawLatex(0.17, 0.75, "#it{Simulation}");
-        latex->DrawLatex(0.17, 0.70, "#it{Preliminary}");
-        latex->SetTextAlign(31); 
-        latex->DrawLatex(0.92, 0.92, Form("%s, #sqrt{s} = 13 TeV",this->GetSampleTitle().c_str()));
-    }
-    latex->SetTextAlign(11);
-    //latex->DrawLatex(0.18,0.92,this->GetAddMark().c_str());
 }
+
 
 TF1 TL1Turnon::fit(TGraphAsymmErrors * eff, int p50)
 {
@@ -352,5 +492,42 @@ void TL1Turnon::SetFit(const bool & doFit)
 //     hist->SetLineColor(colour);
 //     hist->SetMarkerColor(colour);
 // }
+
+
+
+
+TGraphAsymmErrors GetEfficiency(TH1F * total, TH1F * pass)
+{
+    TEfficiency * eff = new TEfficiency(*pass, *total);
+    std::vector<double> x, y, exl, exh, eyl, eyh;
+    double binWidth(0.0);
+    for(int bin=1; bin<=total->GetNbinsX(); ++bin)
+    {
+        binWidth = 0.5*total->GetBinWidth(bin);
+        x.push_back(total->GetBinCenter(bin));
+        y.push_back(eff->GetEfficiency(bin));
+        exl.push_back(binWidth);
+        exh.push_back(binWidth);
+        eyl.push_back(eff->GetEfficiencyErrorLow(bin));
+        eyh.push_back(eff->GetEfficiencyErrorUp(bin));
+    }
+    x.push_back(total->GetBinCenter(total->GetNbinsX())+2*binWidth);
+    y.push_back(eff->GetEfficiency(total->GetNbinsX()+1));
+    exl.push_back(binWidth);
+    exh.push_back(binWidth);
+    eyl.push_back(eff->GetEfficiencyErrorLow(total->GetNbinsX()+1));
+    eyh.push_back(eff->GetEfficiencyErrorUp(total->GetNbinsX()+1));
+
+    TGraphAsymmErrors efficiency(x.size(),&(x[0]),&(y[0]),&(exl[0]),&(exh[0]),&(eyl[0]),&(eyh[0]));
+    efficiency.SetName(Form("%s_DIV_%s",pass->GetName(),total->GetName()));
+    return efficiency;
+}
+
+
+
+
+
+
+
 
 #endif
