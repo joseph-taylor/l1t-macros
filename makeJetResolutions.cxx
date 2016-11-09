@@ -180,8 +180,8 @@ void makeJetResolutions(unsigned runChoiceIndex, std::string batchJobSaveLabel)
 std::vector<double> bins(std::string plotType)
 {
     std::vector<double> temp;
-    if( plotType == "Position" ) for(double binLowerEdge=-0.3; binLowerEdge<=0.3; binLowerEdge+= 0.005) temp.push_back(binLowerEdge);
-    else if( plotType == "Energy" ) for(double binLowerEdge=-1.0; binLowerEdge<=1.5; binLowerEdge+= 0.05) temp.push_back(binLowerEdge);
+    if( plotType == "Position" ) for(double binLowerEdge=-0.3; binLowerEdge<=0.3; binLowerEdge+= 0.010) temp.push_back(binLowerEdge);
+    else if( plotType == "Energy" ) for(double binLowerEdge=-1.0; binLowerEdge<=1.5; binLowerEdge+= 0.10) temp.push_back(binLowerEdge);
     // if( plotType == "Position" ) for(double binLowerEdge=-0.3; binLowerEdge<=0.3; binLowerEdge+= 0.020) temp.push_back(binLowerEdge);
     // else if( plotType == "Energy" ) for(double binLowerEdge=-1.0; binLowerEdge<=1.5; binLowerEdge+= 0.20) temp.push_back(binLowerEdge);
 
