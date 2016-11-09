@@ -419,7 +419,8 @@ void TL1Turnon::DrawCmsStampTurnon(const double & max)
     latex->SetTextFont(42);
     if( this->GetSampleName() == "Data" )
         // latex->DrawLatex(0.15,0.92,Form("#bf{CMS} #it{Preliminary} %s",this->GetSampleTitle().c_str()));
-        latex->DrawLatex(0.15,0.92,"#bf{CMS} #it{Simulation Preliminary}"); //JOE HACK
+        // latex->DrawLatex(0.15,0.92,"#bf{CMS} #it{Simulation Preliminary}"); //JOE HACK
+            latex->DrawLatex(0.15,0.92,"#bf{CMS} #it{Preliminary}"); //JOE HACK
     else
         latex->DrawLatex(0.15,0.92,Form("#bf{CMS} #it{Simulation Preliminary} %s",this->GetSampleTitle().c_str()));
     latex->SetTextAlign(31);
@@ -503,6 +504,7 @@ TGraphAsymmErrors GetEfficiency(TH1F * total, TH1F * pass)
     double binWidth(0.0);
     for(int bin=1; bin<=total->GetNbinsX(); ++bin)
     {
+        if( eff->GetTotalHistogram()->GetBinContent(bin) == 0 ) continue;
         binWidth = 0.5*total->GetBinWidth(bin);
         x.push_back(total->GetBinCenter(bin));
         y.push_back(eff->GetEfficiency(bin));
