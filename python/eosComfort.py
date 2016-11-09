@@ -11,7 +11,7 @@ import os
 # currently only for 0000 subDirectoy
 
 # the directory which holds the divergent paths
-motherDir = "/eos/cms/store/group/dpg_trigger/comm_trigger/L1Trigger/L1Menu2016/Stage2/Collision2016-wRECO-l1t-integration-v71p1/SingleMuon/"
+motherDir = "/eos/cms/store/group/dpg_trigger/comm_trigger/L1Trigger/L1Menu2016/Stage2/Collision2016-wRECO-l1t-integration-v88p0/SingleMuon/"
 
 #######################################
 #######################################
