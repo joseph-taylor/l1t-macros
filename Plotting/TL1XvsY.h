@@ -144,7 +144,8 @@ void TL1XvsY::DrawCmsStamp()
     //latex->SetTextAlign(11);
     // latex->DrawLatex(0.15,0.92,"#bf{CMS} #it{Preliminary} 2016 Data");
     // latex->DrawLatex(0.15,0.92,"#bf{CMS} #it{Preliminary} 2016 MC"); // HACK TO CHANGE THE TITLE
-    latex->DrawLatex(0.15,0.92,"#bf{CMS} #it{Simulation Preliminary}");
+    // latex->DrawLatex(0.15,0.92,"#bf{CMS} #it{Simulation Preliminary}");
+    latex->DrawLatex(0.15,0.92,"#bf{CMS} #it{Preliminary}");
     if( this->GetSampleName() == "Data" )
     {
         //latex->DrawLatex(0.18,0.80,"

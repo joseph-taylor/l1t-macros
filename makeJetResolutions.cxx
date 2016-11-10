@@ -133,6 +133,8 @@ void makeJetResolutions(unsigned runChoiceIndex, std::string batchJobSaveLabel)
         {
             if( !event->fIsLeadingRecoJet ) continue;
             if( !event->fIsMatchedL1Jet ) continue;
+            // PUT IN THE 2 MUON HACK
+            if( ! event->fTwoMuonsExist ) continue;
 
             int pu = event->GetPEvent()->fVertex->nVtx;
             auto recoJet = event->GetPEvent()->fJets;

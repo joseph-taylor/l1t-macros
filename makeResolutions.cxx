@@ -97,11 +97,15 @@ void makeResolutions(unsigned runChoiceIndex, std::string batchJobSaveLabel)
     unsigned NEntries = event->GetPEvent()->GetNEntries();
     while( event->Next() )
     {
+
         unsigned position = event->GetPEvent()->GetPosition()+1;
         TL1Progress::PrintProgressBar(position, NEntries);
 
         int pu = event->GetPEvent()->fVertex->nVtx;
         auto sums = event->GetPEvent()->fSums;
+
+        // PUT IN THE 2 MUON HACK
+        if( ! event->fTwoMuonsExist ) continue;
 
         // HTT
         double recoHtt = sums->Ht;
@@ -128,7 +132,7 @@ void makeResolutions(unsigned runChoiceIndex, std::string batchJobSaveLabel)
         //if( recoEtt != 0.0 && l1Ett != 0.0 )
         //    resolution[2]->Fill(recoEtt, l1Ett, pu);
 
-        if( !event->fMuonFilterPassFlag ) continue; //JOE COMMENTED IN/OUT
+        // if( !event->fMuonFilterPassFlag ) continue; //JOE COMMENTED IN/OUT
 
         // MET
         double recoMet = sums->caloMetBE;

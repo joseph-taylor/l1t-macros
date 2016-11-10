@@ -102,6 +102,9 @@ void makeXvsY(unsigned runChoiceIndex, std::string batchJobSaveLabel)
         int pu = event->GetPEvent()->fVertex->nVtx;
         auto sums = event->GetPEvent()->fSums;
 
+        // PUT IN THE 2 MUON HACK
+        // if( ! event->fTwoMuonsExist ) continue;
+
         //----- HTT -----//
         //double recoHtt = sums->Ht;
         //double l1Htt = event->fL1Htt;

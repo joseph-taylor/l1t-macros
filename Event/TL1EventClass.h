@@ -26,7 +26,7 @@ class TL1EventClass
         std::vector<double> fL1JetEt, fL1JetPhi, fL1JetEta;
 
         // Filter flags
-        bool fMuonFilterPassFlag, fMetFilterPassFlag;
+        bool fMuonFilterPassFlag, fMetFilterPassFlag, fTwoMuonsExist;
         std::vector<bool> fJetFilterPassFlags;
 
         // Recalc L1 Ht/Et Sums
@@ -56,6 +56,7 @@ class TL1EventClass
         void MuonFilter();
         void JetFilter();
         void SumsFilter();
+        void doWeHaveTwoMuons();
 
         // Recalc L1 Ht/Et Sums
         void GetRecalcL1Mht();
@@ -73,7 +74,7 @@ class TL1EventClass
 
 TL1EventClass::TL1EventClass(std::vector<std::string> inDir) :
     fPrimitiveEvent(new TL1PrimitiveEventClass(inDir)),
-    fMuonFilterPassFlag(true), fMetFilterPassFlag(true),
+    fMuonFilterPassFlag(true), fMetFilterPassFlag(true), fTwoMuonsExist(false),
     fMhtPassFlag(true),
     fIsLeadingRecoJet(true), fIsMatchedL1Jet(true)
 {
@@ -102,6 +103,7 @@ void TL1EventClass::GetDerivatives()
     this->MuonFilter();
     this->JetFilter();
     this->SumsFilter();
+    this->doWeHaveTwoMuons();
 
     // Recalc
     this->GetRecalcL1Mht();
@@ -245,6 +247,19 @@ void TL1EventClass::JetFilter()
 void TL1EventClass::SumsFilter()
 {
     fMetFilterPassFlag = fPrimitiveEvent->fMetFilters->hbheNoiseFilter;
+}
+
+
+void TL1EventClass::doWeHaveTwoMuons()
+{
+    int muonCount = 0;
+    for(unsigned jMuon=0; jMuon<fPrimitiveEvent->fMuons->nMuons; ++jMuon)
+    {
+        double pt = fPrimitiveEvent->fMuons->pt[jMuon];
+        bool isLoose = fPrimitiveEvent->fMuons->isLooseMuon[jMuon];
+        if( pt>=10.0 && isLoose) muonCount++;
+    }
+    if (muonCount==2) fTwoMuonsExist = true;
 }
 
 void TL1EventClass::GetRecalcL1Mht()
